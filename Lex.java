@@ -14,44 +14,67 @@ public class Lex {
                                 new FileReader(filename));
         }
 
-        AccionSemantica non = new nu();
-        AccionSemantica str = new StartString();// comienza la lectura de un string
-        AccionSemantica wri = new WriteString();// continua la lectura de un string
-        AccionSemantica fns = new FinishString();// finaliza la lectura de un string
-        AccionSemantica moi = new mayorigual();
-        AccionSemantica may = new mayor();
-        AccionSemantica men = new menor();
+        AccionSemantica none = new nu();
+        AccionSemantica stst = new StartString();// comienza la lectura de un string
+        AccionSemantica writ = new WriteString();// continua la lectura de un string
+        AccionSemantica fnst = new FinishString();// finaliza la lectura de un string
+        AccionSemantica meql = new mayorigual();
+        AccionSemantica mayo = new mayor();
+        AccionSemantica meno = new menor();
         AccionSemantica meoi = new menorigual();
         AccionSemantica dist = new distinto();
         AccionSemantica assi = new assign();
-        AccionSemantica error = new error();
-        AccionSemantica idpr = new idpres();
+        AccionSemantica erro = new error();
+        AccionSemantica stid = new StartId();
+        AccionSemantica wrid = new WriteId();
+        AccionSemantica fnid = new FinishId();
 
-        // L,D,/,*,+,-,=,<,>,:,",@,otro,bl/tab/nl,$(eof)
+        // L 1
+        // D 2
+        // / 3
+        // * 4
+        // + 5
+        // - 6
+        // = 7
+        // < 8
+        // > 9
+        // : 10
+        // " 11
+        // @ 12
+        // ( 13
+        // ) 14
+        // , 15
+        // ; 16
+        // otro 17
+        // bl/tab/nl 18
+        // $ (eof) 19
+
+        // ESTADO TRAMPA -2
         int matrizestados[][] = {
-                        { 1, 7, -1, 2, -1, -1, -1, 6, 5, 8, 9, 1, -1, 0, -1 }, // 0
-                        { 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 1
-                        { -1, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 2
-                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 3
-                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 4
-                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 5
-                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 6
-                        { -1, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 7
-                        { 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0 }, // 8
-                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, 9, 9, 9, 9 }// 9
+                        { 1, 7, -1, -1, -1, -1, -1, 6, 5, 8, 9, 1, -1, -1, -1, -1, -2, 0, -1 }, // 0
+                        { 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 1
+                        { -1, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 2
+                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 3
+                        { -1, -1, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 4
+                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 5
+                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 6
+                        { -1, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 7
+                        { -2, -2, -2, -2, -2, -2, -1, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2 }, // 8
+                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, 9, 9, 9, 9, 9, 9, 9, 9 }// 9
         };
 
-        AccionSemantica matrizAS[][] = {
-                        { null, null, null, null, null, null, null, non, non, non, str, null, null, null, null }, // 0
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 1
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 2
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 3
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 4
-                        { may, may, may, may, may, may, moi, may, may, may, may, may, may, may, may }, // 5
-                        { men, men, men, men, men, men, meoi, men, dist, men, men, men, men, men, men }, // 6
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 7
-                        { error, error, error, error, error, error, assi, error, error, error, error, error, error, error, error }, // 8
-                        { wri, wri, null, null, null, null, null, null, null, null, fns, null, wri, wri, null }// 9
+        AccionSemantica matrizAS[][]={
+                // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   eof
+                {stid, null, null, null, null, null, null, none, none, none, stst, stid, null, null, null,null,null,null,null},//0
+                {wrid, wrid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid,fnid,fnid,fnid,fnid},//1
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null},//2
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null},//3
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null},//4
+                {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayo},//5
+                {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,meno},//6
+                {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null,null,null,null,null},//7
+                {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,erro},//8
+                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,erro},//9
         };
 
         public int getToken() throws IOException {
@@ -71,15 +94,14 @@ public class Lex {
                 return tokenId;
         }
 
-        void setCadena(String c) {
+        public void setCadena(String c) {
                 this.cadena = c;
         }
 
-        String getCadena() {
+        public String getCadena() {
                 return this.cadena;
         }
 
-        // L,D,/,*,+,-,=,<,>,:,",@,otro,bl/tab/nl,$(eof)
         private int decode(int caracterActual) {// A partir de un caracter devuelve su valor de matriz correspondiente
                 int value;
                 if (Character.isLetter((char) caracterActual)) {
@@ -87,7 +109,7 @@ public class Lex {
                 } else if (Character.isDigit((char) caracterActual)) {
                         value = 1;
                 } else if (caracterActual == -1) {
-                        value = 14;
+                        value = 18;
                 } else
                         switch ((char) caracterActual) {
                                 case '/':
@@ -119,13 +141,25 @@ public class Lex {
                                 case '@':
                                         value = 11;
                                         break;
+                                case '(':
+                                        value=12;
+                                        break;
+                                case ')':
+                                        value=13;
+                                        break;
+                                case ',':
+                                        value=14;
+                                        break;
+                                case ';':
+                                        value=15;
+                                        break;
                                 case ' ':
                                 case '\n':
                                         // case 'tab':
-                                        value = 13;
+                                        value = 17;
                                         break;
                                 default:
-                                        value = 12;
+                                        value = 16;
                                         break;
 
                         }
