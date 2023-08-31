@@ -8,7 +8,7 @@ public class StartString extends AccionSemantica{
     public int ejecutar(BufferedReader codigoFuente,Lex lex, int caracterActual,
             Hashtable<String, Integer> tablaSimbolos) throws IOException {
                 lex.setCadena(" ");
-        return -5;
+        return -1;
     }
     
 }

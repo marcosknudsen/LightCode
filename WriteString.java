@@ -8,6 +8,6 @@ public class WriteString extends AccionSemantica {
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             Hashtable<String, Integer> tablaSimbolos) throws IOException {
         lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
-        return -3;
+        return -1;
     }
 }

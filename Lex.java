@@ -14,37 +14,37 @@ public class Lex {
                                 new FileReader(filename));
         }
 
-        AccionSemantica non = new nu();// a reemplazar, unicamente para ocupar espacios de la matriz
+        AccionSemantica non = new nu();
         AccionSemantica str = new StartString();// comienza la lectura de un string
         AccionSemantica wri = new WriteString();// continua la lectura de un string
         AccionSemantica fns = new FinishString();// finaliza la lectura de un string
+        AccionSemantica may = new mayor();
 
         // L,D,/,*,+,-,=,<,>,:,",@,otro,bl/tab/nl,$(eof)
         int matrizestados[][] = {
-                        { 1, 7, -1, 2, -1, -1, -1, 6, 5, 8, 9, 1, -1, 0, -1 },
-                        { 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                        { -1, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
-                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
-                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                        { -1, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
-                        { 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0 },
-                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, 9, 9, 9, 9 }
+                        { 1, 7, -1, 2, -1, -1, -1, 6, 5, 8, 9, 1, -1, 0, -1 }, // 0
+                        { 1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 1
+                        { -1, -1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 2
+                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 3
+                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 4
+                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 5
+                        { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 6
+                        { -1, 7, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 }, // 7
+                        { 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0 }, // 8
+                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, 9, 9, 9, 9 }// 9
         };
 
         AccionSemantica matrizAS[][] = {
-                        // L , D , / , * , + , - , = , < , > , : , " , @ ,otro,bl/tab/nl,$(eof)
-                        { non, non, non, non, non, non, non, non, non, non, str, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { non, non, non, non, non, non, non, non, non, non, non, non, non, non, non },
-                        { wri, wri, non, non, non, non, non, non, non, non, fns, non, wri, wri, non }
+                        { null, null, null, null, null, null, null, null, non, null, str, null, null, null, null }, // 0
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 1
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 2
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 3
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 4
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 5
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 6
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 7
+                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 8
+                        { wri, wri, null, null, null, null, null, null, null, null, fns, null, wri, wri, null }// 9
         };
 
         public int getToken() throws IOException {
