@@ -9,9 +9,9 @@ public class Lex {
         private BufferedReader codigoFuente = null;
         private String cadena;
 
-        public Lex() throws FileNotFoundException {
+        public Lex(String filename) throws FileNotFoundException {
                 this.codigoFuente = new BufferedReader(
-                                new FileReader("./a.txt"));
+                                new FileReader(filename));
         }
 
         AccionSemantica non = new nu();// a reemplazar, unicamente para ocupar espacios de la matriz
