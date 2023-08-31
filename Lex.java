@@ -18,7 +18,14 @@ public class Lex {
         AccionSemantica str = new StartString();// comienza la lectura de un string
         AccionSemantica wri = new WriteString();// continua la lectura de un string
         AccionSemantica fns = new FinishString();// finaliza la lectura de un string
+        AccionSemantica moi = new mayorigual();
         AccionSemantica may = new mayor();
+        AccionSemantica men = new menor();
+        AccionSemantica meoi = new menorigual();
+        AccionSemantica dist = new distinto();
+        AccionSemantica assi = new assign();
+        AccionSemantica error = new error();
+        AccionSemantica idpr = new idpres();
 
         // L,D,/,*,+,-,=,<,>,:,",@,otro,bl/tab/nl,$(eof)
         int matrizestados[][] = {
@@ -35,15 +42,15 @@ public class Lex {
         };
 
         AccionSemantica matrizAS[][] = {
-                        { null, null, null, null, null, null, null, null, non, null, str, null, null, null, null }, // 0
+                        { null, null, null, null, null, null, null, non, non, non, str, null, null, null, null }, // 0
                         { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 1
                         { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 2
                         { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 3
                         { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 4
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 5
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 6
+                        { may, may, may, may, may, may, moi, may, may, may, may, may, may, may, may }, // 5
+                        { men, men, men, men, men, men, meoi, men, dist, men, men, men, men, men, men }, // 6
                         { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 7
-                        { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null }, // 8
+                        { error, error, error, error, error, error, assi, error, error, error, error, error, error, error, error }, // 8
                         { wri, wri, null, null, null, null, null, null, null, null, fns, null, wri, wri, null }// 9
         };
 
