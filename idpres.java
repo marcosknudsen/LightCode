@@ -1,12 +1,12 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public class idpres extends AccionSemantica{
 
     @Override
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
-            Hashtable<String, Integer> tablaSimbolos) throws IOException {
+            HashMap<String, Simbolo> tablaSimbolos) throws IOException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'ejecutar'");
     }

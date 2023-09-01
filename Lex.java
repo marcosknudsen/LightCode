@@ -2,10 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 public class Lex {
-        Hashtable<String, Integer> tablaSimbolos = new Hashtable<>();
+        HashMap<String, Simbolo> tablaSimbolos = new HashMap<>();
         private BufferedReader codigoFuente = null;
         private String cadena;
 
