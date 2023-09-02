@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class StartString extends AccionSemantica{
+public class Start extends AccionSemantica{
 
     @Override
     public int ejecutar(BufferedReader codigoFuente,Lex lex, int caracterActual,
