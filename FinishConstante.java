@@ -7,8 +7,9 @@ public class FinishConstante extends AccionSemantica{
     @Override
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
-        tablaSimbolos.get(lex.getCadena());
-        //
+        Simbolo value= tablaSimbolos.get(lex.getCadena());
+        if (value==null)
+                tablaSimbolos.put(lex.getCadena(),new Simbolo("int", "Constante"));
         return 40;
     }
 

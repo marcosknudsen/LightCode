@@ -7,6 +7,6 @@ public class assign extends AccionSemantica{
     @Override
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
-        return 56;
+        return 10;
     }    
 }

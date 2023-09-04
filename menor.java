@@ -8,8 +8,7 @@ public class menor extends AccionSemantica {
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
         codigoFuente.reset();
-
-        return 46;
+        return 25;
     }
 
 }

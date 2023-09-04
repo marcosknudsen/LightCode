@@ -7,7 +7,8 @@ public class CloseComment extends AccionSemantica{
     @Override
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
-        return -1;
+
+        return 13;
     }
     
 }
