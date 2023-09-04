@@ -36,8 +36,6 @@ public class Lex {
         AccionSemantica clpa = new CloseParentesis();
         AccionSemantica coma = new Coma();
         AccionSemantica pycm = new PuntoYComa();
-        AccionSemantica blan = new Blanco();
-        AccionSemantica opcm = new OpenComment();
         AccionSemantica clcm = new CloseComment();
 
         // L 1
@@ -76,9 +74,9 @@ public class Lex {
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   eof
-                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,blan,null},//0
+                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,none,null},//0
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid,fnid,fnid,fnid,fnid},//1
-                {aste, aste, opcm, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,aste},//2
+                {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//3
                 {none, none, none, clcm, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//4
                 {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayo},//5
