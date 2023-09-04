@@ -15,8 +15,8 @@ public class Lex {
         }
 
         AccionSemantica none = new nu();
-        AccionSemantica stst = new StartString();// comienza la lectura de un string
-        AccionSemantica writ = new WriteString();// continua la lectura de un string
+        AccionSemantica strt = new Start();// comienza la lectura de un string
+        AccionSemantica writ = new Write();// continua la lectura de un string
         AccionSemantica fnst = new FinishString();// finaliza la lectura de un string
         AccionSemantica meql = new mayorigual();
         AccionSemantica mayo = new mayor();
@@ -25,11 +25,7 @@ public class Lex {
         AccionSemantica dist = new distinto();
         AccionSemantica assi = new assign();
         AccionSemantica erro = new error();
-        AccionSemantica stid = new StartId();
-        AccionSemantica wrid = new WriteId();
         AccionSemantica fnid = new FinishId();
-        AccionSemantica stct = new StartConstante();
-        AccionSemantica wrct = new WriteConstante();
         AccionSemantica fnct = new FinishConstante();
         AccionSemantica sdiv = new SignoDivision();
         AccionSemantica aste = new Asterisco();
@@ -80,14 +76,14 @@ public class Lex {
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   eof
-                {stid, stct, sdiv, none, suma, rest, equa, none, none, none, stst, stid, oppa, clpa, coma,pycm,null,blan,null},//0
-                {wrid, wrid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid,fnid,fnid,fnid,fnid},//1
+                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,blan,null},//0
+                {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid,fnid,fnid,fnid,fnid},//1
                 {aste, aste, opcm, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//3
                 {none, none, none, clcm, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//4
                 {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayo},//5
                 {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,meno},//6
-                {fnct, wrct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fnct},//7
+                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fnct},//7
                 {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,erro},//8
                 {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,erro},//9
         };
