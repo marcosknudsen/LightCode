@@ -7,7 +7,7 @@ public class Suma extends AccionSemantica{
     @Override
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
-        return 34;
+        return 40;
     }
     
 }

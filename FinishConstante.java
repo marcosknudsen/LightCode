@@ -10,7 +10,7 @@ public class FinishConstante extends AccionSemantica{
         Simbolo value= tablaSimbolos.get(lex.getCadena());
         if (value==null)
                 tablaSimbolos.put(lex.getCadena(),new Simbolo("int", "Constante"));
-        return 18;
+        return 40;
     }
 
 }

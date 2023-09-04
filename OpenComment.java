@@ -7,7 +7,7 @@ public class OpenComment extends AccionSemantica{
     @Override
     public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
-        return 28;
+        return -1;
     }
     
 }
