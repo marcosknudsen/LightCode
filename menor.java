@@ -9,7 +9,7 @@ public class menor extends AccionSemantica {
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
         codigoFuente.reset();
 
-        return 46;
+        return 25;
     }
 
 }

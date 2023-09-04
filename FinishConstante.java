@@ -9,7 +9,7 @@ public class FinishConstante extends AccionSemantica{
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
         tablaSimbolos.get(lex.getCadena());
         //
-        return 40;
+        return 18;
     }
 
 }
