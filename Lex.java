@@ -8,6 +8,7 @@ public class Lex {
         HashMap<String, Simbolo> tablaSimbolos = new HashMap<>();
         private BufferedReader codigoFuente = null;
         private String cadena;
+        Pointer pointer;
 
         public Lex(String filename) throws FileNotFoundException {
                 this.codigoFuente = new BufferedReader(
@@ -36,7 +37,6 @@ public class Lex {
         AccionSemantica clpa = new CloseParentesis();
         AccionSemantica coma = new Coma();
         AccionSemantica pycm = new PuntoYComa();
-        AccionSemantica clcm = new CloseComment();
 
         // L 1
         // D 2
@@ -78,7 +78,7 @@ public class Lex {
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid,fnid,fnid,fnid,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//3
-                {none, none, none, clcm, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//4
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//4
                 {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayo},//5
                 {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,meno},//6
                 {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fnct},//7
@@ -86,8 +86,7 @@ public class Lex {
                 {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,erro},//9
         };
 
-        public int getToken() throws IOException {
-                int tokenId = 0;
+        public Pointer getToken() throws IOException {
                 int estadoActual = 0;
                 int caracterActual;
                 int caracterValue;
@@ -97,10 +96,10 @@ public class Lex {
                         caracterActual = codigoFuente.read();
                         caracterValue = decode(caracterActual);
                         as = matrizAS[estadoActual][caracterValue];
-                        tokenId = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos);
+                        pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos);
                         estadoActual = matrizestados[estadoActual][caracterValue];
                 }
-                return tokenId;
+                return pointer;
         }
 
         public void setCadena(String c) {

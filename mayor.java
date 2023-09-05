@@ -5,9 +5,9 @@ import java.util.HashMap;
 public class mayor extends AccionSemantica {
 
     @Override
-    public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
+    public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
         codigoFuente.reset();
-        return 23;
+        return new Pointer(23);
     }
 }

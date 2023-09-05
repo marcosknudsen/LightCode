@@ -5,13 +5,13 @@ import java.util.HashMap;
 public class FinishString extends AccionSemantica {
 
     @Override
-    public int ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
+    public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos) throws IOException {
         Simbolo value = tablaSimbolos.get(lex.getCadena());
         if (value==null){
             tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "String"));
         }
-        return 40;
+        return new Pointer(40,lex.getCadena());
     }
 
 }
