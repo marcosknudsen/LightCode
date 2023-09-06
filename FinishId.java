@@ -11,9 +11,10 @@ public class FinishId extends AccionSemantica {
         int Token;
         lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
         if (value == null) {
-            tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "Var"));
+            value = new Simbolo("String", "Var");
+            tablaSimbolos.put(lex.getCadena(), value);
         }
-        if (value.uso == "Var")
+        if (value.uso=="Var")
             Token = 45;//Identificador
         else
             Token = 46;//Palabra reservada
