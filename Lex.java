@@ -163,7 +163,7 @@ public class Lex {
                                         break;
                                 case ' ':
                                 case '\n':
-                                        // case 'tab':
+                                case '\t':
                                         value = 17;
                                         break;
                                 default:
