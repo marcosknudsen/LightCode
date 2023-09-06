@@ -86,7 +86,7 @@ public class Lex {
                 {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,erro},//9
         };
 
-        public Pointer getToken() throws IOException {
+        public int getToken() throws IOException {
                 int estadoActual = 0;
                 int caracterActual;
                 int caracterValue;
@@ -99,7 +99,7 @@ public class Lex {
                         pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos);
                         estadoActual = matrizestados[estadoActual][caracterValue];
                 }
-                return pointer;
+                return pointer.token;
         }
 
         public void setCadena(String c) {
