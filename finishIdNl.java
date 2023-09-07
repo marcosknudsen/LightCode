@@ -7,7 +7,6 @@ public class finishIdNl extends AccionSemantica {
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
         HashMap<String, Simbolo> tablaSimbolos, HashMap<String, Integer> tablaPRes) throws IOException {
-        lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
         String cad = lex.getCadena();
         if (cad.length()>25){// recorto cad a 25 c, 
             cad = cad.substring(0, 25);
