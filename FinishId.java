@@ -11,21 +11,14 @@ public class FinishId extends AccionSemantica {
         boolean isExists = tablaPRes.containsKey(lex.getCadena());
         int Token;
         lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
-        if (!isExists && value == null ) {
+        if (!isExists && value == null ) {//Si no existe lo creo
             value = new Simbolo("String", "Var");
             tablaSimbolos.put(lex.getCadena(), value);
         }
         if (value.uso=="Var")
             Token = 50;//Identificador
-        else{ //Palabra Reservada
-             
-             if (!isExists)
-                return null;
-            else{
-                //Integer valorPr = tablaPRes.obtenerElementoPorClave(lex.getCadena()); //
-                Token=100; //puse 100 para q no de error, iria Token=valorPr
-            }      
-        }   
+        else //Palabra Reservada
+            Token=tablaPRes.get(lex.getCadena());   
              
     return new Pointer(Token, lex.getCadena());
     }
