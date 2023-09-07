@@ -67,6 +67,8 @@ public class Lex {
         AccionSemantica clpa = new CloseParentesis();
         AccionSemantica coma = new Coma();
         AccionSemantica pycm = new PuntoYComa();
+        AccionSemantica newl = new nl();
+        AccionSemantica fnil = new finishIdNl();
 
         // L 1
         // D 2
@@ -90,31 +92,31 @@ public class Lex {
 
         // ESTADO TRAMPA -2
         int matrizestados[][] = {
-                //        L  D  /  *  +  -  =  <  >  :  "  @  (  )  ,  ; otr bl eof 
-                        { 1, 7,-1, 2,-1,-1,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2, 0,-1 }, // 0
-                        { 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1 }, // 1
-                        {-1,-1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 2
-                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 3
-                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 4
-                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 5
-                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 6
-                        {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 7
-                        {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2 }, // 8
-                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9, 9 }// 9
+                //        L  D  /  *  +  -  =  <  >  :  "  @  (  )  ,  ; otr bl nl eof 
+                        { 1, 7,-1, 2,-1,-1,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2, 0, 0 ,-1 }, // 0
+                        { 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1 ,-1 }, // 1
+                        {-1,-1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0 ,-1 }, // 2
+                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0 ,3 }, // 3
+                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0 ,3 }, // 4
+                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0 ,-1 }, // 5
+                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0 ,-1 }, // 6
+                        {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 0 ,-1 }, // 7
+                        {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2, 0 ,-2 }, // 8
+                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9, 0 , 9 }// 9
         };
 
         AccionSemantica matrizAS[][]={
-                // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   eof
-                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,none,null},//0
-                {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid,fnid,fnid},//1
-                {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,aste},//2
-                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//3
-                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,none},//4
-                {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayo},//5
-                {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,meno},//6
-                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fnct},//7
-                {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,erro},//8
-                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,erro},//9
+                // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   nl    eof
+                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,none,newl,null},//0
+                {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid,fnid,fnil,fnid},//1
+                {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,newl,aste},//2
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,none},//3
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,none},//4
+                {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,newl,mayo},//5
+                {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,newl,meno},//6
+                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,newl,fnct},//7
+                {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,newl,erro},//8
+                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,newl,erro},//9
         };
 
         public int getToken() throws IOException {
@@ -157,7 +159,7 @@ public class Lex {
                 } else if (Character.isDigit((char) caracterActual)) {
                         value = 1;
                 } else if (caracterActual == -1) {
-                        value = 18;
+                        value = 19;
                 } else
                         switch ((char) caracterActual) {
                                 case '/':
@@ -203,6 +205,8 @@ public class Lex {
                                         break;
                                 case ' ':
                                 case '\n':
+                                        value = 18;
+                                        break;
                                 case '\t':
                                         value = 17;
                                         break;
