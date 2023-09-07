@@ -7,6 +7,6 @@ public class TP {
         do{
             Token=lex.getToken();
             System.out.println(Token);
-        }while(token!=-2)
+        }while(Token!=-2);
     }
 }

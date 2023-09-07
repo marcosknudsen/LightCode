@@ -10,10 +10,10 @@ public class Lex {
         private String cadena;
         Pointer pointer;
 
-        public Lex(String filename) throws FileNotFoundException {
-                this.codigoFuente = new BufferedReader(
-                                new FileReader(filename));
-        }
+                public Lex(String filename) throws FileNotFoundException {
+                        this.codigoFuente = new BufferedReader(
+                                        new FileReader(filename));
+                }
 
         AccionSemantica none = new nu();
         AccionSemantica strt = new Start();// comienza la lectura de un string
