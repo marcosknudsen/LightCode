@@ -123,7 +123,7 @@ public class Lex {
                         as = matrizAS[estadoActual][caracterValue];
                         pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos, tablaPRes);
                         estadoActual = matrizestados[estadoActual][caracterValue];
-                        if (estadoActual==-1){
+                        if (estadoActual==-2){
                                 //error
                                 estadoActual=0;
                         }
