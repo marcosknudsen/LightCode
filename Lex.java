@@ -204,6 +204,9 @@ public class Lex {
                                         value = 15;
                                         break;
                                 case ' ':
+                                case '\t':
+                                        value = 17;
+                                        break;
                                 case '\n':
                                         value = 18;
                                         break;
