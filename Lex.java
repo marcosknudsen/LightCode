@@ -8,7 +8,7 @@ public class Lex {
         HashMap<String, Simbolo> tablaSimbolos = new HashMap<>();
         HashMap<String, Integer> tablaPRes = new HashMap<>();
 
-        private BufferedReader codigoFuente = null;
+        private BufferedReader codigoFuente;
         private String cadena;
         Pointer pointer;
         int line;
