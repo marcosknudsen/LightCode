@@ -221,4 +221,12 @@ public class Lex {
                 return value;
         }
 
+
+        public String getChar(char caracter){
+                String value;
+                if (caracter=='\n'){
+                        value = "nl";
+                }
+                else if (caracter=='\t'){
+                        value="tab";
 }
