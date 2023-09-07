@@ -230,3 +230,17 @@ public class Lex {
                 else if (caracter=='\t'){
                         value="tab";
 }
+                else if (caracter==' '){
+                        value="space";
+                }
+                else if (caracter=='\r'){
+                        value="CR";
+                }
+                else{
+                        value=String.valueOf(caracter);
+                }
+                return value;
+        }
+
+}
+
