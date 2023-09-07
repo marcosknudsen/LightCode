@@ -18,6 +18,17 @@ public class Lex {
                 public Lex(String filename) throws FileNotFoundException {
                         this.codigoFuente = new BufferedReader(
                                         new FileReader(filename));
+                        tablaPRes.put("if",80);
+                        tablaPRes.put("then",81);
+                        tablaPRes.put("else",82);
+                        tablaPRes.put("begin",83);
+                        tablaPRes.put("end",84);
+                        tablaPRes.put("end_if",85);
+                        tablaPRes.put("print",86);
+                        tablaPRes.put("while",87);
+                        tablaPRes.put("do",88);
+                        tablaPRes.put("fun",89);
+                        tablaPRes.put("return",90);
                 }
 
         AccionSemantica none = new nu();
@@ -119,22 +130,9 @@ public class Lex {
 
 
 
-        /*public Integer obtenerElementoPorClave(String clave) { //retorna el elemento para darle valor al token de la palabra reservada en finishid()
+        public Integer obtenerElementoPorClave(String clave) { //retorna el elemento para darle valor al token de la palabra reservada en finishid()
                 return tablaPRes.get(clave);
             }
-
-        tablaPRes.put("if",80);
-        tablaPRes.put("then",81);
-        tablaPRes.put("else",82);
-        tablaPRes.put("begin",83);
-        tablaPRes.put("end",84);
-        tablaPRes.put("end_if",85);
-        tablaPRes.put("print",86);
-        tablaPRes.put("while",87);
-        tablaPRes.put("do",88;
-        tablaPRes.put("fun",89;
-        tablaPRes.put("return",90);*/
-      
 
         
         private int decode(int caracterActual) {// A partir de un caracter devuelve su valor de matriz correspondiente
