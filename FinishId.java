@@ -6,7 +6,7 @@ public class FinishId extends AccionSemantica {
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
-            HashMap<String, Simbolo> tablaSimbolos) throws IOException {
+            HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         Simbolo value = tablaSimbolos.get(lex.getCadena());
         int Token;
         lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
@@ -16,9 +16,17 @@ public class FinishId extends AccionSemantica {
         }
         if (value.uso=="Var")
             Token = 50;//Identificador
-        else
-            Token = 51;//Palabra reservada
-        return new Pointer(Token, lex.getCadena());
+        else{ //Palabra Reservada
+             
+             if (tablaPRes.get(value) == null)
+                return null;
+            else{
+                //Integer valorPr = tablaPRes.obtenerElementoPorClave(lex.getCadena()); //
+                Token=100; //puse 100 para q no de error, iria Token=valorPr
+            }      
+        }   
+             
+    return new Pointer(Token, lex.getCadena());
     }
 
 }

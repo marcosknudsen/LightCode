@@ -6,7 +6,7 @@ public class Write extends AccionSemantica {
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
-            HashMap<String, Simbolo> tablaSimbolos) throws IOException {
+            HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
         return new Pointer(-1);
     }

@@ -6,6 +6,11 @@ import java.util.HashMap;
 
 public class Lex {
         HashMap<String, Simbolo> tablaSimbolos = new HashMap<>();
+        HashMap<String, Integer> tablaPRes = new HashMap<>();
+
+       
+
+
         private BufferedReader codigoFuente = null;
         private String cadena;
         Pointer pointer;
@@ -38,9 +43,11 @@ public class Lex {
         AccionSemantica coma = new Coma();
         AccionSemantica pycm = new PuntoYComa();
 
+        
+
         // L 1
         // D 2
-        // / 3
+        // / 3D
         // * 4
         // + 5
         // - 6
@@ -96,7 +103,7 @@ public class Lex {
                         caracterActual = codigoFuente.read();
                         caracterValue = decode(caracterActual);
                         as = matrizAS[estadoActual][caracterValue];
-                        pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos);
+                        pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos, tablaPRes);
                         estadoActual = matrizestados[estadoActual][caracterValue];
                 }
                 return pointer.token;
@@ -110,6 +117,26 @@ public class Lex {
                 return this.cadena;
         }
 
+
+
+        /*public Integer obtenerElementoPorClave(String clave) { //retorna el elemento para darle valor al token de la palabra reservada en finishid()
+                return tablaPRes.get(clave);
+            }
+
+        tablaPRes.put("if",80);
+        tablaPRes.put("then",81);
+        tablaPRes.put("else",82);
+        tablaPRes.put("begin",83);
+        tablaPRes.put("end",84);
+        tablaPRes.put("end_if",85);
+        tablaPRes.put("print",86);
+        tablaPRes.put("while",87);
+        tablaPRes.put("do",88;
+        tablaPRes.put("fun",89;
+        tablaPRes.put("return",90);*/
+      
+
+        
         private int decode(int caracterActual) {// A partir de un caracter devuelve su valor de matriz correspondiente
                 int value;
                 if (Character.isLetter((char) caracterActual)) {

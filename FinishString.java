@@ -6,12 +6,12 @@ public class FinishString extends AccionSemantica {
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
-            HashMap<String, Simbolo> tablaSimbolos) throws IOException {
+            HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         Simbolo value = tablaSimbolos.get(lex.getCadena());
         if (value==null){
             tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "String"));
         }
-        return new Pointer(40,lex.getCadena());
+        return new Pointer(54,lex.getCadena());
     }
 
 }
