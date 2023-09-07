@@ -14,10 +14,9 @@ public class finishIdNl extends AccionSemantica {
             System.out.println("The string is shortened to 25 characters");
         }
         Simbolo value = tablaSimbolos.get(cad);
-        boolean isExists = tablaPRes.containsKey(cad);
-        int Token=tablaPRes.get(cad);
+        int Token=tablaPRes.getOrDefault(cad,-1);
         
-        if (!isExists) {// Si no es PR reescribe el token
+        if (Token==-1) {// Si no es PR reescribe el token
             if (value == null) {
                 value = new Simbolo("String", "Var");
                 tablaSimbolos.put(cad, value);
