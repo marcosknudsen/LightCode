@@ -13,7 +13,7 @@ public class FinishId extends AccionSemantica {
             System.out.println("The string is shortened to 25 characters");
         }
         Simbolo value = tablaSimbolos.get(cad);
-        int Token=tablaPRes.getOrDefault("cad",-1);
+        int Token=tablaPRes.getOrDefault(cad,-1);
         
         if (Token==-1) {// Si no es PR reescribe el token
             if (value == null) {
