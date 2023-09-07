@@ -11,7 +11,7 @@ public class FinishId extends AccionSemantica {
         boolean isExists = tablaPRes.containsKey(lex.getCadena());
         int Token;
         lex.setCadena(lex.getCadena() + String.valueOf((char) caracterActual));
-        if (!isExists && value == null ) {//Si no existe lo creo
+        if (!isExists) {//Si no existe lo creo
             value = new Simbolo("String", "Var");
             tablaSimbolos.put(lex.getCadena(), value);
         }
