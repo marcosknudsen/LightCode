@@ -26,6 +26,8 @@ public class Lex {
                 tablaPRes.put("do", 88);
                 tablaPRes.put("fun", 89);
                 tablaPRes.put("return", 90);
+                tablaPRes.put("uinteger", 91);
+                tablaPRes.put("longint", 92);
 
                 tablaSimbolos.put("if", new Simbolo("String", "pr"));
                 tablaSimbolos.put("then", new Simbolo("String", "pr"));
@@ -38,6 +40,8 @@ public class Lex {
                 tablaSimbolos.put("do", new Simbolo("String", "pr"));
                 tablaSimbolos.put("fun", new Simbolo("String", "pr"));
                 tablaSimbolos.put("return", new Simbolo("String", "pr"));
+                tablaSimbolos.put("uinteger", new Simbolo("String", "pr"));
+                tablaSimbolos.put("longint", new Simbolo("String", "pr"));
         }
 
         AccionSemantica none = new nu();
