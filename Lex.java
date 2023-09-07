@@ -208,6 +208,7 @@ public class Lex {
                                         value = 17;
                                         break;
                                 case '\n':
+                                case '\r':
                                         value = 18;
                                         break;
                                 case '\t':
