@@ -8,28 +8,37 @@ public class Lex {
         HashMap<String, Simbolo> tablaSimbolos = new HashMap<>();
         HashMap<String, Integer> tablaPRes = new HashMap<>();
 
-       
-
-
         private BufferedReader codigoFuente = null;
         private String cadena;
         Pointer pointer;
 
-                public Lex(String filename) throws FileNotFoundException {
-                        this.codigoFuente = new BufferedReader(
-                                        new FileReader(filename));
-                        tablaPRes.put("if",80);
-                        tablaPRes.put("then",81);
-                        tablaPRes.put("else",82);
-                        tablaPRes.put("begin",83);
-                        tablaPRes.put("end",84);
-                        tablaPRes.put("end_if",85);
-                        tablaPRes.put("print",86);
-                        tablaPRes.put("while",87);
-                        tablaPRes.put("do",88);
-                        tablaPRes.put("fun",89);
-                        tablaPRes.put("return",90);
-                }
+        public Lex(String filename) throws FileNotFoundException {
+                this.codigoFuente = new BufferedReader(
+                                new FileReader(filename));
+                tablaPRes.put("if", 80);
+                tablaPRes.put("then", 81);
+                tablaPRes.put("else", 82);
+                tablaPRes.put("begin", 83);
+                tablaPRes.put("end", 84);
+                tablaPRes.put("end_if", 85);
+                tablaPRes.put("print", 86);
+                tablaPRes.put("while", 87);
+                tablaPRes.put("do", 88);
+                tablaPRes.put("fun", 89);
+                tablaPRes.put("return", 90);
+
+                tablaSimbolos.put("if", new Simbolo("String", "pr"));
+                tablaSimbolos.put("then", new Simbolo("String", "pr"));
+                tablaSimbolos.put("else", new Simbolo("String", "pr"));
+                tablaSimbolos.put("begin", new Simbolo("String", "pr"));
+                tablaSimbolos.put("end", new Simbolo("String", "pr"));
+                tablaSimbolos.put("end_if", new Simbolo("String", "pr"));
+                tablaSimbolos.put("print", new Simbolo("String", "pr"));
+                tablaSimbolos.put("while", new Simbolo("String", "pr"));
+                tablaSimbolos.put("do", new Simbolo("String", "pr"));
+                tablaSimbolos.put("fun", new Simbolo("String", "pr"));
+                tablaSimbolos.put("return", new Simbolo("String", "pr"));
+        }
 
         AccionSemantica none = new nu();
         AccionSemantica strt = new Start();// comienza la lectura de un string
@@ -53,8 +62,6 @@ public class Lex {
         AccionSemantica clpa = new CloseParentesis();
         AccionSemantica coma = new Coma();
         AccionSemantica pycm = new PuntoYComa();
-
-        
 
         // L 1
         // D 2
@@ -116,6 +123,10 @@ public class Lex {
                         as = matrizAS[estadoActual][caracterValue];
                         pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos, tablaPRes);
                         estadoActual = matrizestados[estadoActual][caracterValue];
+                        if (estadoActual==-1){
+                                //error
+                                estadoActual=0;
+                        }
                 }
                 return pointer.token;
         }
@@ -128,13 +139,11 @@ public class Lex {
                 return this.cadena;
         }
 
-
-
-        public Integer obtenerElementoPorClave(String clave) { //retorna el elemento para darle valor al token de la palabra reservada en finishid()
+        public Integer obtenerElementoPorClave(String clave) { // retorna el elemento para darle valor al token de la
+                                                               // palabra reservada en finishid()
                 return tablaPRes.get(clave);
-            }
+        }
 
-        
         private int decode(int caracterActual) {// A partir de un caracter devuelve su valor de matriz correspondiente
                 int value;
                 if (Character.isLetter((char) caracterActual)) {
@@ -175,16 +184,16 @@ public class Lex {
                                         value = 11;
                                         break;
                                 case '(':
-                                        value=12;
+                                        value = 12;
                                         break;
                                 case ')':
-                                        value=13;
+                                        value = 13;
                                         break;
                                 case ',':
-                                        value=14;
+                                        value = 14;
                                         break;
                                 case ';':
-                                        value=15;
+                                        value = 15;
                                         break;
                                 case ' ':
                                 case '\n':
