@@ -18,5 +18,4 @@ public class FinishConstante extends AccionSemantica{
             return new Pointer(-1, lex.getCadena());
         }
     }
-
 }
