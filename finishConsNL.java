@@ -9,7 +9,7 @@ public class finishConsNL extends AccionSemantica{
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String, Integer> tablaPRes) throws IOException {
         Simbolo value= tablaSimbolos.get(lex.getCadena());
         if (value==null)
-            tablaSimbolos.put(lex.getCadena(),new Simbolo("int", "Constante"));    
+            tablaSimbolos.put(lex.getCadena(),new Simbolo(Integer.parseInt(lex.getCadena())>65535?"longint":"uinteger", "Constante"));
         lex.line++;         
         return new Pointer(55,lex.getCadena());
     }
