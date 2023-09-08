@@ -2,11 +2,11 @@ import java.io.IOException;
 
 public class TP {
     public static void main(String[] args) throws IOException {
-        Lex lex = new Lex(args[0]);
+        Lex lex = new Lex("./a.txt");
         int Token;
-        do{
+        for (int i = 0; i <7;i++){
             Token=lex.getToken();
             System.out.println(Token);
-        }while(Token!=-2);
+        }
     }
 }
