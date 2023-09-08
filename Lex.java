@@ -69,11 +69,14 @@ public class Lex {
         AccionSemantica pycm = new PuntoYComa();
         AccionSemantica newl = new nl();
         AccionSemantica fnil = new finishIdNl();
+
         AccionSemantica astl = new finishAst();
         AccionSemantica mayl = new finishMay();
         AccionSemantica menl = new finishmenor();
         AccionSemantica wnnl = new warningNL();
         //new warningcom
+        AccionSemantica fncd = new finishCodigo();
+
 
         // L 1
         // D 2
@@ -114,7 +117,7 @@ public class Lex {
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   nl    eof
-                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,none,newl,none},//0
+                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, strt, strt, oppa, clpa, coma,pycm,null,none,newl,fncd},//0
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid,fnid,fnil,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,astl,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,none},//3
@@ -122,7 +125,7 @@ public class Lex {
                 {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayl,mayo},//5
                 {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,menl,meno},//6
                 {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,newl,fnct},//7
-                {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,wnnl,erro},//8
+                {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,wnnl,erro},//8         
                 {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,newl,erro},//9
         };
 
@@ -135,6 +138,7 @@ public class Lex {
                         codigoFuente.mark(1);
                         caracterActual = codigoFuente.read();
                         caracterValue = decode(caracterActual);
+                        System.out.println(estadoActual+": "+getChar((char)caracterActual)+"=> "+matrizestados[estadoActual][caracterValue]);
                         as = matrizAS[estadoActual][caracterValue];
                         pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos, tablaPRes);
                         estadoActual = matrizestados[estadoActual][caracterValue];
