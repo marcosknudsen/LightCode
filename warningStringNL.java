@@ -12,6 +12,7 @@ public class warningStringNL extends AccionSemantica{
             tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "String"));
         }
         lex.line++;
+        System.out.println("Warning: La cadena no fue cerrada correctamente");
         return new Pointer(54,lex.getCadena());
     }
 
