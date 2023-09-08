@@ -73,7 +73,7 @@ public class Lex {
         AccionSemantica mayl = new finishMay();
         AccionSemantica menl = new finishmenor();
         AccionSemantica wnnl = new warningNL();
-        AccionSemantica wnst = new warningNL();
+        AccionSemantica wnst = new warningStringNL();
         AccionSemantica fncd = new finishCodigo();
         AccionSemantica fncn = new finishConsNL();
 
@@ -110,7 +110,7 @@ public class Lex {
                         {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 6
                         {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 7
                         {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2 }, // 8
-                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9, 0, 9 }  // 9
+                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9, -1, 9 }  // 9
         };
 
 
@@ -138,7 +138,7 @@ public class Lex {
                         codigoFuente.mark(1);
                         caracterActual = codigoFuente.read();
                         caracterValue = decode(caracterActual);
-                        System.out.println(estadoActual+": "+getChar((char)caracterActual)+"=> "+matrizestados[estadoActual][caracterValue]);
+                        //System.out.println(estadoActual+": "+getChar((char)caracterActual)+"=> "+matrizestados[estadoActual][caracterValue]);
                         as = matrizAS[estadoActual][caracterValue];
                         pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos, tablaPRes);
                         estadoActual = matrizestados[estadoActual][caracterValue];
