@@ -22,7 +22,7 @@ public class FinishId extends AccionSemantica {
             }
             Token=50;
         }
-
+        codigoFuente.reset();
         return new Pointer(Token, cad);
     }
 
