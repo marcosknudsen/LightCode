@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class finishmenor extends AccionSemantica{
+public class FinishMenor extends AccionSemantica{
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,

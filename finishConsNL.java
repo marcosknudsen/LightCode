@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class finishConsNL extends AccionSemantica {
+public class FinishConsNL extends AccionSemantica {
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,

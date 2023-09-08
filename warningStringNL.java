@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class warningStringNL extends AccionSemantica{
+public class WarningStringNL extends AccionSemantica{
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
