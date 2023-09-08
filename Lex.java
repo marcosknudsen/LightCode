@@ -69,13 +69,13 @@ public class Lex {
         AccionSemantica pycm = new PuntoYComa();
         AccionSemantica newl = new nl();
         AccionSemantica fnil = new finishIdNl();
-
         AccionSemantica astl = new finishAst();
         AccionSemantica mayl = new finishMay();
         AccionSemantica menl = new finishmenor();
         AccionSemantica wnnl = new warningNL();
-        //new warningcom
+        AccionSemantica wnst = new warningNL();
         AccionSemantica fncd = new finishCodigo();
+        AccionSemantica fncn = new finishConsNL();
 
 
         // L 1
@@ -124,9 +124,9 @@ public class Lex {
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,none},//4
                 {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayl,mayo},//5
                 {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,menl,meno},//6
-                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,newl,fnct},//7
+                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fncn,fnct},//7
                 {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,wnnl,erro},//8         
-                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,newl,erro},//9
+                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,wnst,erro},//9
         };
 
         public int getToken() throws IOException {
