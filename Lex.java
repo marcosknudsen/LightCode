@@ -11,7 +11,7 @@ public class Lex {
         private BufferedReader codigoFuente;
         private String cadena;
         Pointer pointer;
-        int line;
+        int line=1;
 
         public Lex(String filename) throws FileNotFoundException {
                 this.codigoFuente = new BufferedReader(
@@ -76,7 +76,7 @@ public class Lex {
         AccionSemantica wnst = new warningStringNL();
         AccionSemantica fncd = new finishCodigo();
         AccionSemantica fncn = new finishConsNL();
-
+        AccionSemantica stst = new StartString();
 
         // L 1
         // D 2
@@ -101,16 +101,17 @@ public class Lex {
         // ESTADO TRAMPA -2
         int matrizestados[][] = {
                 //        L  D  /  *  +  -  =  <  >  :  "  @  (  )  ,  ; otr bl nl eof 
-                        { 1, 7,-1, 2,-1,-1,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2, 0, 0,-1 }, // 0
+                        { 1, 7,-1, 2,-1,10,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2, 0, 0,-1 }, // 0
                         { 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 1
                         {-1,-1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 2
-                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 3
-                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }, // 4
+                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,-2}, // 3
+                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,-2}, // 4
                         {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 5
                         {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 6
                         {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 7
                         {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2 }, // 8
-                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9,-1, 9 }  // 9
+                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9,-1, 9 }, // 9
+                        {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }  //10
         };
 
 
@@ -120,13 +121,14 @@ public class Lex {
                 {strt, strt, sdiv, none, suma, strt, equa, none, none, none, stst, strt, oppa, clpa, coma,pycm,null,none,newl,fncd},//0
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid,fnid,fnil,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,astl,aste},//2
-                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,none},//3
-                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,none},//4
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,erro},//3
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,erro},//4
                 {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo,mayo,mayl,mayo},//5
                 {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno,meno,menl,meno},//6
                 {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fncn,fnct},//7
                 {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,wnnl,erro},//8         
                 {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,wnst,erro},//9
+                {rest, writ, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest,rest,rest,rest,rest,rest}//10
         };
 
         public int getToken() throws IOException {
@@ -225,27 +227,5 @@ public class Lex {
                         }
                 return value;
         }
-
-
-        public String getChar(char caracter){
-                String value;
-                if (caracter=='\n'){
-                        value = "nl";
-                }
-                else if (caracter=='\t'){
-                        value="tab";
-                }
-                else if (caracter==' '){
-                        value="space";
-                }
-                else if (caracter=='\r'){
-                        value="CR";
-                }
-                else{
-                        value=String.valueOf(caracter);
-                }
-                return value;
-        }
-
 }
 

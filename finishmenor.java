@@ -8,7 +8,8 @@ public class finishmenor extends AccionSemantica{
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         codigoFuente.reset();
-        lex.line++;
+        if (caracterActual=='\n')
+            lex.line+=1;
         return new Pointer(25);
     }
     

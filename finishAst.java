@@ -7,7 +7,8 @@ public class finishAst extends AccionSemantica {
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
-        lex.line++;
+        if (caracterActual=='\n')
+            lex.line+=1;
         codigoFuente.reset();
         return new Pointer(33);
 

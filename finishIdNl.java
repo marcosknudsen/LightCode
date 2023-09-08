@@ -22,7 +22,8 @@ public class finishIdNl extends AccionSemantica {
             }
             Token=50;
         }
-        lex.line++;
+        if (caracterActual=='\n')
+            lex.line+=1;
         return new Pointer(Token, cad);
     }
 
