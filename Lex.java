@@ -182,6 +182,7 @@ public class Lex {
                                         break;
                                 case '=':
                                         value = 6;
+                                        break;
                                 case '<':
                                         value = 7;
                                         break;
