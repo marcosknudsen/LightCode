@@ -12,8 +12,15 @@ public class FinishConsNL extends AccionSemantica {
             tablaSimbolos.put(lex.getCadena(),
                     new Simbolo(Integer.parseInt(lex.getCadena()) > 65535 ? "longint" : "uinteger", "Constante"));
         codigoFuente.reset();
-        lex.line++;
-        return new Pointer(55, lex.getCadena());
+
+        if (caracterActual=='\n')
+                lex.line++;
+        
+        if (Integer.parseInt(lex.getCadena()) > 65535)
+                return new Pointer(92);
+        else
+                return new Pointer(91);
+      
     }
 
 }
