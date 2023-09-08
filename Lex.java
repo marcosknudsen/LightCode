@@ -211,9 +211,6 @@ public class Lex {
                                 case '\r':
                                         value = 18;
                                         break;
-                                case '\t':
-                                        value = 17;
-                                        break;
                                 default:
                                         value = 16;
                                         break;
