@@ -8,6 +8,6 @@ public class TP {
         do{
             System.out.println(Token);
             Token=lex.getToken();
-        }while (Token!=-3);
+        }while (Token!=-1);
     }
 }
