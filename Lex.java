@@ -147,11 +147,6 @@ public class Lex {
                 return this.cadena;
         }
 
-        public Integer obtenerElementoPorClave(String clave) { // retorna el elemento para darle valor al token de la
-                                                               // palabra reservada en finishid()
-                return tablaPRes.get(clave);
-        }
-
         private int decode(int caracterActual) {// A partir de un caracter devuelve su valor de matriz correspondiente
                 int value;
                 if (Character.isLetter((char) caracterActual)) {
