@@ -5,9 +5,9 @@ public class TP {
         Lex lex = new Lex("./a.txt");
         int Token=0;
         Token=lex.getToken();
-        do{
+        while (Token!=-1){
             System.out.println(Token);
             Token=lex.getToken();
-        }while (Token!=-1);
+        };
     }
 }
