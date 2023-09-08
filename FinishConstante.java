@@ -13,5 +13,4 @@ public class FinishConstante extends AccionSemantica{
         codigoFuente.reset();
         return new Pointer(55,lex.getCadena());
     }
-
 }

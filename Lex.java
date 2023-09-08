@@ -101,7 +101,7 @@ public class Lex {
         // ESTADO TRAMPA -2
         int matrizestados[][] = {
                 //        L  D  /  *  +  -  =  <  >  :  "  @  (  )  ,  ; otr bl nl eof 
-                        { 1, 7,-1, 2,-1,10,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2, 0, 0,-1 }, // 0
+                        { 1, 7,-1, 2,-1,-1,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2, 0, 0,-1 }, // 0
                         { 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 1
                         {-1,-1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 2
                         { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,-2}, // 3
@@ -111,14 +111,13 @@ public class Lex {
                         {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }, // 7
                         {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2 }, // 8
                         { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9, 9,-1, 9 }, // 9
-                        {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1 }  //10
         };
 
 
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro  bl   nl    eof
-                {strt, strt, sdiv, none, suma, strt, equa, none, none, none, stst, strt, oppa, clpa, coma,pycm,null,none,newl,fncd},//0
+                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, stst, strt, oppa, clpa, coma,pycm,null,none,newl,fncd},//0
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid,fnid,fnil,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste,aste,astl,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none,none,newl,erro},//3
@@ -128,7 +127,6 @@ public class Lex {
                 {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct,fnct,fncn,fnct},//7
                 {erro, erro, erro, erro, erro, erro, assi, erro, erro, erro, erro, erro, erro, erro, erro,erro,erro,erro,wnnl,erro},//8         
                 {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ,writ,wnst,erro},//9
-                {rest, writ, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest, rest,rest,rest,rest,rest,rest}//10
         };
 
         public int getToken() throws IOException {
