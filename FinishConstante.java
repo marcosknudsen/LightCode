@@ -12,7 +12,6 @@ public class FinishConstante extends AccionSemantica {
             tablaSimbolos.put(lex.getCadena(),
                     new Simbolo(Integer.parseInt(lex.getCadena()) > 65535 ? "longint" : "uinteger", "Constante"));
         codigoFuente.reset();
-        lex.line++;
         return new Pointer(55, lex.getCadena());
     }
 }
