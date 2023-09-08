@@ -132,7 +132,7 @@ public class Lex {
                         pointer = as.ejecutar(codigoFuente, (Lex) this, caracterActual, tablaSimbolos, tablaPRes);
                         estadoActual = matrizestados[estadoActual][caracterValue];
                         if (estadoActual==-2){
-                                //error
+                                System.out.println("Error: linea N°"+this.line);
                                 estadoActual=0;
                         }
                 }
