@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 
 public class TP {
     public static void main(String[] args) throws IOException {
@@ -37,7 +38,7 @@ public class TP {
         tokens.put(92, "longint");
         Token=lex.getToken();
         while (Token!=-1){
-            System.out.println(Token);
+            System.out.println(Token+": "+tokens.get(Token));
             Token=lex.getToken();
         };
     }
