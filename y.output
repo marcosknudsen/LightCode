@@ -1,0 +1,209 @@
+   0  $accept : programa $end
+
+   1  programa : asignacion
+
+   2  asignacion : ID ASSIGN expresion ';'
+
+   3  expresion : expresion '+' termino
+   4            | expresion '-' termino
+   5            | termino
+
+   6  termino : termino '*' factor
+   7          | termino '/' factor
+   8          | factor
+
+   9  factor : ID
+  10         | CTE_UINTEGER
+  11         | CTE_LONGINT
+  12         | CTE_INT
+
+state 0
+	$accept : . programa $end  (0)
+
+	ID  shift 1
+	.  error
+
+	programa  goto 2
+	asignacion  goto 3
+
+
+state 1
+	asignacion : ID . ASSIGN expresion ';'  (2)
+
+	ASSIGN  shift 4
+	.  error
+
+
+state 2
+	$accept : programa . $end  (0)
+
+	$end  accept
+
+
+state 3
+	programa : asignacion .  (1)
+
+	.  reduce 1
+
+
+state 4
+	asignacion : ID ASSIGN . expresion ';'  (2)
+
+	ID  shift 5
+	CTE_UINTEGER  shift 6
+	CTE_LONGINT  shift 7
+	CTE_INT  shift 8
+	.  error
+
+	expresion  goto 9
+	termino  goto 10
+	factor  goto 11
+
+
+state 5
+	factor : ID .  (9)
+
+	.  reduce 9
+
+
+state 6
+	factor : CTE_UINTEGER .  (10)
+
+	.  reduce 10
+
+
+state 7
+	factor : CTE_LONGINT .  (11)
+
+	.  reduce 11
+
+
+state 8
+	factor : CTE_INT .  (12)
+
+	.  reduce 12
+
+
+state 9
+	asignacion : ID ASSIGN expresion . ';'  (2)
+	expresion : expresion . '+' termino  (3)
+	expresion : expresion . '-' termino  (4)
+
+	';'  shift 12
+	'+'  shift 13
+	'-'  shift 14
+	.  error
+
+
+state 10
+	expresion : termino .  (5)
+	termino : termino . '*' factor  (6)
+	termino : termino . '/' factor  (7)
+
+	'*'  shift 15
+	'/'  shift 16
+	';'  reduce 5
+	'+'  reduce 5
+	'-'  reduce 5
+
+
+state 11
+	termino : factor .  (8)
+
+	.  reduce 8
+
+
+state 12
+	asignacion : ID ASSIGN expresion ';' .  (2)
+
+	.  reduce 2
+
+
+state 13
+	expresion : expresion '+' . termino  (3)
+
+	ID  shift 5
+	CTE_UINTEGER  shift 6
+	CTE_LONGINT  shift 7
+	CTE_INT  shift 8
+	.  error
+
+	termino  goto 17
+	factor  goto 11
+
+
+state 14
+	expresion : expresion '-' . termino  (4)
+
+	ID  shift 5
+	CTE_UINTEGER  shift 6
+	CTE_LONGINT  shift 7
+	CTE_INT  shift 8
+	.  error
+
+	termino  goto 18
+	factor  goto 11
+
+
+state 15
+	termino : termino '*' . factor  (6)
+
+	ID  shift 5
+	CTE_UINTEGER  shift 6
+	CTE_LONGINT  shift 7
+	CTE_INT  shift 8
+	.  error
+
+	factor  goto 19
+
+
+state 16
+	termino : termino '/' . factor  (7)
+
+	ID  shift 5
+	CTE_UINTEGER  shift 6
+	CTE_LONGINT  shift 7
+	CTE_INT  shift 8
+	.  error
+
+	factor  goto 20
+
+
+state 17
+	expresion : expresion '+' termino .  (3)
+	termino : termino . '*' factor  (6)
+	termino : termino . '/' factor  (7)
+
+	'*'  shift 15
+	'/'  shift 16
+	';'  reduce 3
+	'+'  reduce 3
+	'-'  reduce 3
+
+
+state 18
+	expresion : expresion '-' termino .  (4)
+	termino : termino . '*' factor  (6)
+	termino : termino . '/' factor  (7)
+
+	'*'  shift 15
+	'/'  shift 16
+	';'  reduce 4
+	'+'  reduce 4
+	'-'  reduce 4
+
+
+state 19
+	termino : termino '*' factor .  (6)
+
+	.  reduce 6
+
+
+state 20
+	termino : termino '/' factor .  (7)
+
+	.  reduce 7
+
+
+23 terminals, 6 nonterminals
+13 grammar rules, 21 states

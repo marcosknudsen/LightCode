@@ -8,6 +8,7 @@ public class Lex {
         HashMap<String, Simbolo> tablaSimbolos = new HashMap<>();
         HashMap<String, Integer> tablaPRes = new HashMap<>();
 
+        ParserVal yylval;
         private BufferedReader codigoFuente;
         private String cadena;
         Pointer pointer;
