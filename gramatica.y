@@ -2,7 +2,7 @@
     import Lex;
 %}
 
-%token IF THEN ID ASSIGN ELSE BEGIN END END_IF PRINT WHILE DO FUN RETURN CTE CADENA UINTEGER LONGINT
+%token IF THEN ID ASSIGN ELSE BEGIN END END_IF PRINT WHILE DO FUN RETURN CTE CADENA UINTEGER LONGINT MAYOR_IGUAL MENOR_IGUAL DISTINTO
 %start programa
 
 %%
@@ -10,10 +10,10 @@
 programa:ID bloque
 ;
 
-bloque: BEGIN SS END
+bloque: BEGIN ss END
 ;
 
-bloqueejecutable:BEGIN SSE END
+bloqueejecutable:BEGIN sse END
 ;
 
 ss: ss s
@@ -40,6 +40,17 @@ iteracion: DO bloqueejecutable WHILE '('condicion')'
 
 seleccion: IF '('condicion')' THEN bloqueejecutable END_IF
     | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF
+;
+
+condicion: expresion '>' expresion
+        | expresion '<' expresion
+        | expresion '=' expresion
+        | expresion MAYOR_IGUAL expresion
+        | expresion MENOR_IGUAL expresion
+        | expresion DISTINTO expresion
+;
+
+parametro: tipodato ID
 ;
 
 retorno: RETURN '('expresion')'
@@ -82,7 +93,6 @@ listavariables: ID ',' listavariables
 
 invocacion: ID '('')'
     | ID '('expresion')'
-    | ID '('ID')'
 ;
 %%
 
