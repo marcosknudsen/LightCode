@@ -8,6 +8,7 @@ public class FinishString extends AccionSemantica {
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         Simbolo value = tablaSimbolos.get(lex.getCadena());
+        lex.yylval=new ParserVal(lex.getCadena());
         if (value==null){
             tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "String"));
         }

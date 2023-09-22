@@ -15,7 +15,6 @@ public class FinishConstante extends AccionSemantica {
                                                                 : "uinteger", "Constante"));
                         lex.yylval=new ParserVal(lex.getCadena());
                         codigoFuente.reset();
-
                         if (Integer.parseInt(lex.getCadena()) > 65535)
                                 return new Pointer(92);
                         else

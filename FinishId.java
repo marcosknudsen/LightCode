@@ -14,7 +14,8 @@ public class FinishId extends AccionSemantica {
         }
         Simbolo value = tablaSimbolos.get(cad);
         int Token=tablaPRes.getOrDefault(cad,-1);
-        
+        lex.yylval=new ParserVal(lex.getCadena());
+
         if (Token==-1) {// Si no es PR reescribe el token
             if (value == null) {
                 value = new Simbolo("String", "Var");
