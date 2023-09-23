@@ -1,5 +1,6 @@
 %{
-    import Lex;
+    import java.io.FileNotFoundException;
+    import java.io.IOException;
 %}
 
 %token IF THEN ID ASSIGN ELSE BEGIN END END_IF PRINT WHILE DO FUN RETURN CTE CADENA UINTEGER LONGINT MAYOR_IGUAL MENOR_IGUAL DISTINTO
@@ -96,7 +97,8 @@ invocacion: ID '('')'
 ;
 %%
 
-int yylex(){
-    int token=Lex.getToken();
+int yylex() throws IOException,FileNotFoundException{
+    Lex lex = new Lex("./a.txt");
+    int token=lex.getToken();
     return token;
 }

@@ -9,6 +9,7 @@ public class FinishString extends AccionSemantica {
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         Simbolo value = tablaSimbolos.get(lex.getCadena());
         lex.yylval=new ParserVal(lex.getCadena());
+        System.out.print(lex.getCadena()+" ");
         if (value==null){
             tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "String"));
         }
