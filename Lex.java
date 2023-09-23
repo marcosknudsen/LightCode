@@ -73,7 +73,7 @@ public class Lex {
         AccionSemantica mayl = new FinishMayor();
         AccionSemantica menl = new FinishMenor();
         AccionSemantica wnst = new WarningStringNL();
-        AccionSemantica fncn = new FinishConsNL();
+        AccionSemantica fncn = new finishConsNL();
         AccionSemantica stst = new StartString();
 
         // L 1

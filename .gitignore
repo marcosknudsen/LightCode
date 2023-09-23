@@ -1,5 +1,6 @@
 *.txt
 *.class
+*.jar
 .vscode/
 Parser.java
 ParserVal.java
