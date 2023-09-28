@@ -75,6 +75,7 @@ public class Lex {
         AccionSemantica wnst = new WarningStringNL();
         AccionSemantica fncn = new finishConsNL();
         AccionSemantica stst = new StartString();
+        AccionSemantica lite = new Literal();
 
         // L 1
         // D 2
@@ -115,7 +116,7 @@ public class Lex {
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro bl/tab  nl   eof
-                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, stst, strt, oppa, clpa, coma,pycm,null, none ,newl,none},//0
+                {strt, strt, lite, none, lite, lite, lite, none, none, none, stst, strt, lite, lite, lite,lite,null, none ,newl,none},//0
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid, fnid ,fnil,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste, aste ,astl,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none},//3
