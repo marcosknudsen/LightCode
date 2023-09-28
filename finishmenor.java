@@ -10,7 +10,7 @@ public class FinishMenor extends AccionSemantica{
         codigoFuente.reset();
         if (caracterActual=='\n')
             lex.line+=1;
-        return new Pointer(25);
+        return new Pointer(60);
     }
     
 }

@@ -10,7 +10,7 @@ public class FinishAst extends AccionSemantica {
         if (caracterActual=='\n')
             lex.line+=1;
         codigoFuente.reset();
-        return new Pointer(33);
+        return new Pointer(42);
 
     }
     

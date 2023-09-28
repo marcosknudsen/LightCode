@@ -8,18 +8,18 @@ public class TP {
         HashMap<Integer,String> tokens = new HashMap<>();
         tokens.put(10,":=");
         tokens.put(16,"<>");
-        tokens.put(22, "=");
-        tokens.put(23, ">");
+        tokens.put(61, "=");
+        tokens.put(62, ">");
         tokens.put(24, ">=");
-        tokens.put(25, "<");
+        tokens.put(60, "<");
         tokens.put(26, "<=");
-        tokens.put(32, "-");
-        tokens.put(32, "/");
-        tokens.put(33, "*");
-        tokens.put(34, "+");
-        tokens.put(45, ";");
-        tokens.put(47, "(");
-        tokens.put(48, ")");
+        tokens.put(45, "-");
+        tokens.put(47, "/");
+        tokens.put(42, "*");
+        tokens.put(43, "+");
+        tokens.put(59, ";");
+        tokens.put(40, "(");
+        tokens.put(41, ")");
         tokens.put(50, "IDENTIFICADOR");
         tokens.put(51, "PALABRA RESERVADA");
         tokens.put(54, "CADENA");
@@ -41,5 +41,11 @@ public class TP {
             System.out.println(Token+": "+tokens.get(Token));
             Token=lex.getToken();
         };
+
+        for (String name: lex.tablaSimbolos.keySet()) {
+            String key = name.toString();
+            String value = lex.tablaSimbolos.get(name).tipo.toString()+" "+lex.tablaSimbolos.get(name).uso.toString();
+            System.out.println(key + " " + value);
+        }
     }
 }

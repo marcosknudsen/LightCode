@@ -48,34 +48,28 @@ public class Lex {
 
         AccionSemantica none = new None();
         AccionSemantica strt = new Start();
+        AccionSemantica stst = new StartString();
+        AccionSemantica newl = new NewLine();
         AccionSemantica writ = new Write();
-        AccionSemantica fnst = new FinishString();// finaliza la lectura de un string
-        AccionSemantica meql = new MayorIgual();
+        AccionSemantica fnid = new FinishId();
+        AccionSemantica fnil = new finishIdNl();
+        AccionSemantica aste = new Asterisco();
+        AccionSemantica lite = new Literal();
+        AccionSemantica astl = new FinishAst();
         AccionSemantica mayo = new Mayor();
+        AccionSemantica meql = new MayorIgual();
         AccionSemantica meno = new Menor();
         AccionSemantica meoi = new MenorIgual();
         AccionSemantica dist = new Distinto();
-        AccionSemantica assi = new Assign();
-        AccionSemantica fnid = new FinishId();
-        AccionSemantica fnct = new FinishConstante();
-        AccionSemantica sdiv = new SignoDivision();
-        AccionSemantica aste = new Asterisco();
-        AccionSemantica suma = new Suma();
-        AccionSemantica rest = new Resta();
-        AccionSemantica equa = new Igual();
-        AccionSemantica oppa = new OpenParentesis();
-        AccionSemantica clpa = new CloseParentesis();
-        AccionSemantica coma = new Coma();
-        AccionSemantica pycm = new PuntoYComa();
-        AccionSemantica newl = new NewLine();
-        AccionSemantica fnil = new FinishIdNl();
-        AccionSemantica astl = new FinishAst();
-        AccionSemantica mayl = new FinishMayor();
-        AccionSemantica menl = new FinishMenor();
         AccionSemantica wnst = new WarningStringNL();
+        AccionSemantica fnst = new FinishString();
+        AccionSemantica fnct = new FinishConstante();
         AccionSemantica fncn = new finishConsNL();
-        AccionSemantica stst = new StartString();
+        AccionSemantica menl = new FinishMenor();
+        AccionSemantica mayl = new FinishMayor();
+        AccionSemantica assi = new Assign();
 
+ 
         // L 1
         // D 2
         // / 3D
@@ -115,7 +109,7 @@ public class Lex {
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro bl/tab  nl   eof
-                {strt, strt, sdiv, none, suma, rest, equa, none, none, none, stst, strt, oppa, clpa, coma,pycm,null, none ,newl,none},//0
+                {strt, strt, lite, none, lite, lite, lite, none, none, none, stst, strt, lite, lite, lite,lite,null, none ,newl,none},//0
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid, fnid ,fnil,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste, aste ,astl,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none},//3

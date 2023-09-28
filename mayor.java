@@ -8,6 +8,6 @@ public class Mayor extends AccionSemantica {
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
         codigoFuente.reset();
-        return new Pointer(23);
+        return new Pointer(62);
     }
 }
