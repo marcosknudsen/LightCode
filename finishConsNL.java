@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class FinishConsNL extends AccionSemantica {
+public class finishConsNL extends AccionSemantica {
 
         @Override
         public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
@@ -16,7 +16,7 @@ public class FinishConsNL extends AccionSemantica {
                                                                 : "uinteger", "Constante"));
                         codigoFuente.reset();
                         lex.yylval=new ParserVal(lex.getCadena());
-                        System.out.print(lex.getCadena()+" ");
+                        System.out.print(" "+lex.getCadena()+" ");
                         if (Integer.parseInt(lex.getCadena()) > 65535)
                                 return new Pointer(92);
                         else

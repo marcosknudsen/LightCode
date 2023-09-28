@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class FinishIdNl extends AccionSemantica {
+public class finishIdNl extends AccionSemantica {
 
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
@@ -14,6 +14,8 @@ public class FinishIdNl extends AccionSemantica {
         }
         Simbolo value = tablaSimbolos.get(cad);
         int Token=tablaPRes.getOrDefault(cad,-1);
+        lex.yylval=new ParserVal(lex.getCadena());
+        System.out.print(" "+lex.getCadena()+" ");
         if (Token==-1) {// Si no es PR reescribe el token
             lex.yylval=new ParserVal(lex.getCadena());
             System.out.print(lex.getCadena()+" ");
