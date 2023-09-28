@@ -1,5 +1,6 @@
 %{
-    import Lex;
+    import java.io.FileNotFoundException;
+    import java.io.IOException;
 %}
 
 %token IF THEN ID ASSIGN ELSE BEGIN END END_IF PRINT WHILE DO FUN RETURN CTE CADENA UINTEGER LONGINT MAYOR_IGUAL MENOR_IGUAL DISTINTO
@@ -28,7 +29,7 @@ sse:se
     | sse se
 ;
 
-se:seleccion ';'
+se:seleccion ';'{System.out.println("A");}
     | iteracion';'
     | retorno ';'
     | asignacion ';'
@@ -96,7 +97,30 @@ invocacion: ID '('')'
 ;
 %%
 
+
+static Lex lex=null;
+static Parser par=null;
+
+public static void main(String[] args) throws FileNotFoundException{
+    System.out.println("Iniciando compilacion...");
+    lex=new Lex(args[0]);
+    par=new Parser(false);
+    par.run();
+    System.out.println("Fin compilacion");
+}
+
+
 int yylex(){
-    int token=Lex.getToken();
+    int token;
+    try {
+      token = lex.getToken();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      token=-1;
+    }
     return token;
+}
+
+void yyerror(String s){
+    System.out.println(s);
 }
