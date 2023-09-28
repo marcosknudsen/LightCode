@@ -55,7 +55,7 @@ public class Lex {
         AccionSemantica fnil = new finishIdNl();
         AccionSemantica aste = new Asterisco();
         AccionSemantica lite = new Literal();
-        AccionSemantica astl = new FinishAst();
+        AccionSemantica astl = new finishAst();
         AccionSemantica mayo = new Mayor();
         AccionSemantica meql = new MayorIgual();
         AccionSemantica meno = new Menor();
@@ -65,7 +65,7 @@ public class Lex {
         AccionSemantica fnst = new FinishString();
         AccionSemantica fnct = new FinishConstante();
         AccionSemantica fncn = new finishConsNL();
-        AccionSemantica menl = new FinishMenor();
+        AccionSemantica menl = new finishMenor();
         AccionSemantica mayl = new FinishMayor();
         AccionSemantica assi = new Assign();
 
