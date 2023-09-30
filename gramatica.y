@@ -8,47 +8,47 @@
 
 %%
 
-programa:ID bloque
+programa:ID bloque {System.out.println("programa");}
 ;
 
-bloque: BEGIN ss END
+bloque: BEGIN ss END {System.out.println("bloque");}
 ;
 
-bloqueejecutable:BEGIN sse END
+bloqueejecutable:BEGIN sse END {System.out.println("bloqueejecutable");}
 ;
 
-ss: ss s
-    | s
+ss: ss s {System.out.println("ss");}
+    | s  {System.out.println("s");}
 ;
 
-s: declaracion
-    |se
+s: declaracion {System.out.println("declaracion");}
+    |se {System.out.println("se");}
 ;
 
-sse:se
-    | sse se
+sse:se {System.out.println("se");}
+    | sse se {System.out.println("sse");}
 ;
 
-se:seleccion ';'
-    | iteracion';'
-    | retorno ';'
-    | asignacion ';'
-    | print ';'
+se:seleccion ';' {System.out.println("seleccion");}
+    | iteracion';' {System.out.println("iteracion");}
+    | retorno ';' {System.out.println("retorno");}
+    | asignacion ';' {System.out.println("asignacion");}
+    | print ';' {System.out.println("print");}
 ;
 
-iteracion: DO bloqueejecutable WHILE '('condicion')'
+iteracion: DO bloqueejecutable WHILE '('condicion')' {System.out.println("do while");}
 ;
 
-seleccion: IF '('condicion')' THEN bloqueejecutable END_IF
-    | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF
+seleccion: IF '('condicion')' THEN bloqueejecutable END_IF {System.out.println("if");}
+    | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("if_else");}
 ;
 
-condicion: expresion '>' expresion
-        | expresion '<' expresion
-        | expresion '=' expresion
-        | expresion MAYOR_IGUAL expresion
-        | expresion MENOR_IGUAL expresion
-        | expresion DISTINTO expresion
+condicion: expresion '>' expresion {System.out.println(">");}
+        | expresion '<' expresion {System.out.println("<");}
+        | expresion '=' expresion {System.out.println("=");}
+        | expresion MAYOR_IGUAL expresion {System.out.println("Mayor igual");}
+        | expresion MENOR_IGUAL expresion {System.out.println("Menor igual");}
+        | expresion DISTINTO expresion {System.out.println("Distinto");}
 ;
 
 parametro: tipodato ID
@@ -72,14 +72,14 @@ tipodato: UINTEGER
     | LONGINT
 ;
 
-expresion: termino
+expresion: termino {System.out.println("Expresion");}
     | expresion '+' termino
     | expresion '-' termino
 ;
 
-termino: factor
-    | termino '*' factor
-    | termino '/' factor
+termino: factor {System.out.println("termino");}
+    | termino '*' factor {System.out.println("factor");}
+    | termino '/' factor {System.out.println("factor");}
 ;
 
 factor:ID
@@ -106,7 +106,7 @@ static Parser par=null;
 public static void main(String[] args) throws FileNotFoundException{
     System.out.println("Iniciando compilacion...");
     lex=new Lex(args[0]);
-    par=new Parser(false);
+    par=new Parser(true);
     par.run();
     System.out.println("Fin compilacion");
 }
