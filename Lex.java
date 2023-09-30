@@ -151,7 +151,7 @@ public class Lex {
 
         private int decode(int caracterActual) {// A partir de un caracter devuelve su valor de matriz correspondiente
                 int value;
-                if (Character.isLetter((char) caracterActual)) {
+                if (Character.isLetter((char) caracterActual)||caracterActual=='_') {
                         value = 0;
                 } else if (Character.isDigit((char) caracterActual)) {
                         value = 1;
