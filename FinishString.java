@@ -12,7 +12,7 @@ public class FinishString extends AccionSemantica {
         if (value==null){
             tablaSimbolos.put(lex.getCadena(), new Simbolo("String", "String"));
         }
-        return new Pointer(54,lex.getCadena());
+        return new Pointer(271,lex.getCadena());
     }
 
 }

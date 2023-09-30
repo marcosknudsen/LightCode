@@ -20,7 +20,7 @@ public class finishIdNl extends AccionSemantica {
                 value = new Simbolo("String", "Var");
                 tablaSimbolos.put(cad, value);
             }
-            Token=50;
+            Token=259;
         }
         if (caracterActual=='\n')
             lex.line+=1;

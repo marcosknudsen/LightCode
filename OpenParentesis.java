@@ -7,7 +7,7 @@ public class OpenParentesis extends AccionSemantica{
     @Override
     public Pointer ejecutar(BufferedReader codigoFuente, Lex lex, int caracterActual,
             HashMap<String, Simbolo> tablaSimbolos, HashMap<String,Integer> tablaPRes) throws IOException {
-        return new Pointer(47);
+        return new Pointer(-1);
     }
 
 }

@@ -13,8 +13,9 @@ public class WarningStringNL extends AccionSemantica{
         }
         if (caracterActual=='\n')
             lex.line+=1;
+        lex.yylval=new ParserVal(lex.getCadena());
         System.out.println("Warning: La cadena no fue cerrada correctamente: linea "+lex.line);
-        return new Pointer(54,lex.getCadena());
+        return new Pointer(271,lex.getCadena());
     }
 
 }

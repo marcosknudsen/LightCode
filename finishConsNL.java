@@ -17,9 +17,9 @@ public class finishConsNL extends AccionSemantica {
                         codigoFuente.reset();
                         lex.yylval=new ParserVal(lex.getCadena());
                         if (Integer.parseInt(lex.getCadena()) > 65535)
-                                return new Pointer(92);
+                                return new Pointer(273);
                         else
-                                return new Pointer(91);
+                                return new Pointer(272);
 
                 } catch (NumberFormatException e) {
                         System.out.println("Error: El valor ingresado no se encuentra dentro del rango aceptado");

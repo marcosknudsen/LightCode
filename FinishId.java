@@ -21,7 +21,7 @@ public class FinishId extends AccionSemantica {
                 value = new Simbolo("String", "Var");
                 tablaSimbolos.put(cad, value);
             }
-            Token=50;
+            Token=259;
         }
         codigoFuente.reset();
         return new Pointer(Token, cad);

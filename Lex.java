@@ -17,19 +17,19 @@ public class Lex {
         public Lex(String filename) throws FileNotFoundException {
                 this.codigoFuente = new BufferedReader(
                                 new FileReader(filename));
-                tablaPRes.put("if", 80);
-                tablaPRes.put("then", 81);
-                tablaPRes.put("else", 82);
-                tablaPRes.put("begin", 83);
-                tablaPRes.put("end", 84);
-                tablaPRes.put("end_if", 85);
-                tablaPRes.put("print", 86);
-                tablaPRes.put("while", 87);
-                tablaPRes.put("do", 88);
-                tablaPRes.put("fun", 89);
-                tablaPRes.put("return", 90);
-                tablaPRes.put("uinteger", 91);
-                tablaPRes.put("longint", 92);
+                tablaPRes.put("if", 257);
+                tablaPRes.put("then", 258);
+                tablaPRes.put("else", 261);
+                tablaPRes.put("begin", 262);
+                tablaPRes.put("end", 263);
+                tablaPRes.put("end_if", 264);
+                tablaPRes.put("print", 265);
+                tablaPRes.put("while", 266);
+                tablaPRes.put("do", 267);
+                tablaPRes.put("fun", 268);
+                tablaPRes.put("return", 269);
+                tablaPRes.put("uinteger", 272);
+                tablaPRes.put("longint", 273);
 
                 tablaSimbolos.put("if", new Simbolo("String", "pr"));
                 tablaSimbolos.put("then", new Simbolo("String", "pr"));
