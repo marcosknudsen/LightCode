@@ -29,7 +29,7 @@ sse:se
     | sse se
 ;
 
-se:seleccion ';'{System.out.println("A");}
+se:seleccion ';'
     | iteracion';'
     | retorno ';'
     | asignacion ';'
@@ -83,8 +83,10 @@ termino: factor
 ;
 
 factor:ID
-    |CTE
-    |'-' CTE
+    |UINTEGER
+    |'-' UINTEGER
+    | LONGINT
+    | '-' LONGINT
     |invocacion
 ;
 
