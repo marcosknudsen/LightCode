@@ -1,6 +1,7 @@
 *.txt
 *.class
 *.jar
+y.output
 .vscode/
 Parser.java
 ParserVal.java
