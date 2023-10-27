@@ -57,15 +57,17 @@
   38          | termino '/' factor
 
   39  factor : ID
-  40         | CTE
-  41         | '-' CTE
-  42         | invocacion
+  40         | UINTEGER
+  41         | '-' UINTEGER
+  42         | LONGINT
+  43         | '-' LONGINT
+  44         | invocacion
 
-  43  listavariables : ID ',' listavariables
-  44                 | ID
+  45  listavariables : ID ',' listavariables
+  46                 | ID
 
-  45  invocacion : ID '(' ')'
-  46             | ID '(' expresion ')'
+  47  invocacion : ID '(' ')'
+  48             | ID '(' expresion ')'
 
 state 0
 	$accept : . programa $end  (0)
@@ -266,35 +268,37 @@ state 22
 	seleccion : IF '(' . condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF  (17)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	condicion  goto 41
-	expresion  goto 42
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	condicion  goto 42
+	expresion  goto 43
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 23
 	asignacion : ID ASSIGN . expresion  (26)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	expresion  goto 46
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	expresion  goto 47
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 24
 	print : PRINT '(' . CADENA ')'  (27)
 
-	CADENA  shift 47
+	CADENA  shift 48
 	.  error
 
 
@@ -308,8 +312,8 @@ state 25
 	RETURN  shift 9
 	.  error
 
-	sse  goto 48
-	se  goto 49
+	sse  goto 49
+	se  goto 50
 	seleccion  goto 16
 	iteracion  goto 17
 	retorno  goto 18
@@ -320,7 +324,7 @@ state 25
 state 26
 	iteracion : DO bloqueejecutable . WHILE '(' condicion ')'  (15)
 
-	WHILE  shift 50
+	WHILE  shift 51
 	.  error
 
 
@@ -328,14 +332,15 @@ state 27
 	retorno : RETURN '(' . expresion ')'  (25)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	expresion  goto 51
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	expresion  goto 52
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 28
@@ -381,34 +386,34 @@ state 34
 
 
 state 35
-	listavariables : ID . ',' listavariables  (43)
-	listavariables : ID .  (44)
+	listavariables : ID . ',' listavariables  (45)
+	listavariables : ID .  (46)
 
-	','  shift 52
-	';'  reduce 44
+	','  shift 53
+	';'  reduce 46
 
 
 state 36
 	declaracion : tipodato FUN . ID '(' parametro ')' bloque  (28)
 	declaracion : tipodato FUN . ID '(' ')' bloque  (29)
 
-	ID  shift 53
+	ID  shift 54
 	.  error
 
 
 state 37
 	declaracion : tipodato listavariables . ';'  (30)
 
-	';'  shift 54
+	';'  shift 55
 	.  error
 
 
 state 38
 	factor : ID .  (39)
-	invocacion : ID . '(' ')'  (45)
-	invocacion : ID . '(' expresion ')'  (46)
+	invocacion : ID . '(' ')'  (47)
+	invocacion : ID . '(' expresion ')'  (48)
 
-	'('  shift 55
+	'('  shift 56
 	MAYOR_IGUAL  reduce 39
 	MENOR_IGUAL  reduce 39
 	DISTINTO  reduce 39
@@ -424,27 +429,35 @@ state 38
 
 
 state 39
-	factor : CTE .  (40)
+	factor : UINTEGER .  (40)
 
 	.  reduce 40
 
 
 state 40
-	factor : '-' . CTE  (41)
+	factor : LONGINT .  (42)
 
-	CTE  shift 56
-	.  error
+	.  reduce 42
 
 
 state 41
-	seleccion : IF '(' condicion . ')' THEN bloqueejecutable END_IF  (16)
-	seleccion : IF '(' condicion . ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF  (17)
+	factor : '-' . UINTEGER  (41)
+	factor : '-' . LONGINT  (43)
 
-	')'  shift 57
+	UINTEGER  shift 57
+	LONGINT  shift 58
 	.  error
 
 
 state 42
+	seleccion : IF '(' condicion . ')' THEN bloqueejecutable END_IF  (16)
+	seleccion : IF '(' condicion . ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF  (17)
+
+	')'  shift 59
+	.  error
+
+
+state 43
 	condicion : expresion . '>' expresion  (18)
 	condicion : expresion . '<' expresion  (19)
 	condicion : expresion . '=' expresion  (20)
@@ -454,24 +467,24 @@ state 42
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	MAYOR_IGUAL  shift 58
-	MENOR_IGUAL  shift 59
-	DISTINTO  shift 60
-	'>'  shift 61
-	'<'  shift 62
-	'='  shift 63
-	'+'  shift 64
-	'-'  shift 65
+	MAYOR_IGUAL  shift 60
+	MENOR_IGUAL  shift 61
+	DISTINTO  shift 62
+	'>'  shift 63
+	'<'  shift 64
+	'='  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	.  error
 
 
-state 43
+state 44
 	expresion : termino .  (33)
 	termino : termino . '*' factor  (37)
 	termino : termino . '/' factor  (38)
 
-	'*'  shift 66
-	'/'  shift 67
+	'*'  shift 68
+	'/'  shift 69
 	MAYOR_IGUAL  reduce 33
 	MENOR_IGUAL  reduce 33
 	DISTINTO  reduce 33
@@ -484,48 +497,48 @@ state 43
 	'-'  reduce 33
 
 
-state 44
+state 45
 	termino : factor .  (36)
 
 	.  reduce 36
 
 
-state 45
-	factor : invocacion .  (42)
-
-	.  reduce 42
-
-
 state 46
+	factor : invocacion .  (44)
+
+	.  reduce 44
+
+
+state 47
 	asignacion : ID ASSIGN expresion .  (26)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	';'  reduce 26
 
 
-state 47
+state 48
 	print : PRINT '(' CADENA . ')'  (27)
 
-	')'  shift 68
+	')'  shift 70
 	.  error
 
 
-state 48
+state 49
 	bloqueejecutable : BEGIN sse . END  (3)
 	sse : sse . se  (9)
 
 	IF  shift 5
 	ID  shift 6
-	END  shift 69
+	END  shift 71
 	PRINT  shift 7
 	DO  shift 8
 	RETURN  shift 9
 	.  error
 
-	se  goto 70
+	se  goto 72
 	seleccion  goto 16
 	iteracion  goto 17
 	retorno  goto 18
@@ -533,369 +546,387 @@ state 48
 	print  goto 20
 
 
-state 49
+state 50
 	sse : se .  (8)
 
 	.  reduce 8
 
 
-state 50
+state 51
 	iteracion : DO bloqueejecutable WHILE . '(' condicion ')'  (15)
 
-	'('  shift 71
-	.  error
-
-
-state 51
-	retorno : RETURN '(' expresion . ')'  (25)
-	expresion : expresion . '+' termino  (34)
-	expresion : expresion . '-' termino  (35)
-
-	')'  shift 72
-	'+'  shift 64
-	'-'  shift 65
+	'('  shift 73
 	.  error
 
 
 state 52
-	listavariables : ID ',' . listavariables  (43)
+	retorno : RETURN '(' expresion . ')'  (25)
+	expresion : expresion . '+' termino  (34)
+	expresion : expresion . '-' termino  (35)
+
+	')'  shift 74
+	'+'  shift 66
+	'-'  shift 67
+	.  error
+
+
+state 53
+	listavariables : ID ',' . listavariables  (45)
 
 	ID  shift 35
 	.  error
 
-	listavariables  goto 73
-
-
-state 53
-	declaracion : tipodato FUN ID . '(' parametro ')' bloque  (28)
-	declaracion : tipodato FUN ID . '(' ')' bloque  (29)
-
-	'('  shift 74
-	.  error
+	listavariables  goto 75
 
 
 state 54
+	declaracion : tipodato FUN ID . '(' parametro ')' bloque  (28)
+	declaracion : tipodato FUN ID . '(' ')' bloque  (29)
+
+	'('  shift 76
+	.  error
+
+
+state 55
 	declaracion : tipodato listavariables ';' .  (30)
 
 	.  reduce 30
 
 
-state 55
-	invocacion : ID '(' . ')'  (45)
-	invocacion : ID '(' . expresion ')'  (46)
+state 56
+	invocacion : ID '(' . ')'  (47)
+	invocacion : ID '(' . expresion ')'  (48)
 
 	ID  shift 38
-	CTE  shift 39
-	')'  shift 75
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	')'  shift 77
+	'-'  shift 41
 	.  error
 
-	expresion  goto 76
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	expresion  goto 78
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
-state 56
-	factor : '-' CTE .  (41)
+state 57
+	factor : '-' UINTEGER .  (41)
 
 	.  reduce 41
 
 
-state 57
-	seleccion : IF '(' condicion ')' . THEN bloqueejecutable END_IF  (16)
-	seleccion : IF '(' condicion ')' . THEN bloqueejecutable ELSE bloqueejecutable END_IF  (17)
-
-	THEN  shift 77
-	.  error
-
-
 state 58
-	condicion : expresion MAYOR_IGUAL . expresion  (21)
+	factor : '-' LONGINT .  (43)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	.  error
-
-	expresion  goto 78
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	.  reduce 43
 
 
 state 59
-	condicion : expresion MENOR_IGUAL . expresion  (22)
+	seleccion : IF '(' condicion ')' . THEN bloqueejecutable END_IF  (16)
+	seleccion : IF '(' condicion ')' . THEN bloqueejecutable ELSE bloqueejecutable END_IF  (17)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	THEN  shift 79
 	.  error
-
-	expresion  goto 79
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
 
 
 state 60
-	condicion : expresion DISTINTO . expresion  (23)
+	condicion : expresion MAYOR_IGUAL . expresion  (21)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
 	expresion  goto 80
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 61
-	condicion : expresion '>' . expresion  (18)
+	condicion : expresion MENOR_IGUAL . expresion  (22)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
 	expresion  goto 81
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 62
-	condicion : expresion '<' . expresion  (19)
+	condicion : expresion DISTINTO . expresion  (23)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
 	expresion  goto 82
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 63
-	condicion : expresion '=' . expresion  (20)
+	condicion : expresion '>' . expresion  (18)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
 	expresion  goto 83
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 64
-	expresion : expresion '+' . termino  (34)
+	condicion : expresion '<' . expresion  (19)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	termino  goto 84
-	factor  goto 44
-	invocacion  goto 45
+	expresion  goto 84
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 65
-	expresion : expresion '-' . termino  (35)
+	condicion : expresion '=' . expresion  (20)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	termino  goto 85
-	factor  goto 44
-	invocacion  goto 45
+	expresion  goto 85
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 66
-	termino : termino '*' . factor  (37)
+	expresion : expresion '+' . termino  (34)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	factor  goto 86
-	invocacion  goto 45
+	termino  goto 86
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 67
-	termino : termino '/' . factor  (38)
+	expresion : expresion '-' . termino  (35)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	factor  goto 87
-	invocacion  goto 45
+	termino  goto 87
+	factor  goto 45
+	invocacion  goto 46
 
 
 state 68
+	termino : termino '*' . factor  (37)
+
+	ID  shift 38
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
+	.  error
+
+	factor  goto 88
+	invocacion  goto 46
+
+
+state 69
+	termino : termino '/' . factor  (38)
+
+	ID  shift 38
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
+	.  error
+
+	factor  goto 89
+	invocacion  goto 46
+
+
+state 70
 	print : PRINT '(' CADENA ')' .  (27)
 
 	.  reduce 27
 
 
-state 69
+state 71
 	bloqueejecutable : BEGIN sse END .  (3)
 
 	.  reduce 3
 
 
-state 70
+state 72
 	sse : sse se .  (9)
 
 	.  reduce 9
 
 
-state 71
+state 73
 	iteracion : DO bloqueejecutable WHILE '(' . condicion ')'  (15)
 
 	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
+	UINTEGER  shift 39
+	LONGINT  shift 40
+	'-'  shift 41
 	.  error
 
-	condicion  goto 88
-	expresion  goto 42
-	termino  goto 43
-	factor  goto 44
-	invocacion  goto 45
+	condicion  goto 90
+	expresion  goto 43
+	termino  goto 44
+	factor  goto 45
+	invocacion  goto 46
 
 
-state 72
+state 74
 	retorno : RETURN '(' expresion ')' .  (25)
 
 	.  reduce 25
 
 
-state 73
-	listavariables : ID ',' listavariables .  (43)
-
-	.  reduce 43
-
-
-state 74
-	declaracion : tipodato FUN ID '(' . parametro ')' bloque  (28)
-	declaracion : tipodato FUN ID '(' . ')' bloque  (29)
-
-	UINTEGER  shift 10
-	LONGINT  shift 11
-	')'  shift 89
-	.  error
-
-	parametro  goto 90
-	tipodato  goto 91
-
-
 state 75
-	invocacion : ID '(' ')' .  (45)
+	listavariables : ID ',' listavariables .  (45)
 
 	.  reduce 45
 
 
 state 76
-	expresion : expresion . '+' termino  (34)
-	expresion : expresion . '-' termino  (35)
-	invocacion : ID '(' expresion . ')'  (46)
+	declaracion : tipodato FUN ID '(' . parametro ')' bloque  (28)
+	declaracion : tipodato FUN ID '(' . ')' bloque  (29)
 
-	')'  shift 92
-	'+'  shift 64
-	'-'  shift 65
+	UINTEGER  shift 10
+	LONGINT  shift 11
+	')'  shift 91
 	.  error
+
+	parametro  goto 92
+	tipodato  goto 93
 
 
 state 77
+	invocacion : ID '(' ')' .  (47)
+
+	.  reduce 47
+
+
+state 78
+	expresion : expresion . '+' termino  (34)
+	expresion : expresion . '-' termino  (35)
+	invocacion : ID '(' expresion . ')'  (48)
+
+	')'  shift 94
+	'+'  shift 66
+	'-'  shift 67
+	.  error
+
+
+state 79
 	seleccion : IF '(' condicion ')' THEN . bloqueejecutable END_IF  (16)
 	seleccion : IF '(' condicion ')' THEN . bloqueejecutable ELSE bloqueejecutable END_IF  (17)
 
 	BEGIN  shift 25
 	.  error
 
-	bloqueejecutable  goto 93
+	bloqueejecutable  goto 95
 
 
-state 78
+state 80
 	condicion : expresion MAYOR_IGUAL expresion .  (21)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	')'  reduce 21
 
 
-state 79
+state 81
 	condicion : expresion MENOR_IGUAL expresion .  (22)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	')'  reduce 22
 
 
-state 80
+state 82
 	condicion : expresion DISTINTO expresion .  (23)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	')'  reduce 23
 
 
-state 81
+state 83
 	condicion : expresion '>' expresion .  (18)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	')'  reduce 18
 
 
-state 82
+state 84
 	condicion : expresion '<' expresion .  (19)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	')'  reduce 19
 
 
-state 83
+state 85
 	condicion : expresion '=' expresion .  (20)
 	expresion : expresion . '+' termino  (34)
 	expresion : expresion . '-' termino  (35)
 
-	'+'  shift 64
-	'-'  shift 65
+	'+'  shift 66
+	'-'  shift 67
 	')'  reduce 20
 
 
-state 84
+state 86
 	expresion : expresion '+' termino .  (34)
 	termino : termino . '*' factor  (37)
 	termino : termino . '/' factor  (38)
 
-	'*'  shift 66
-	'/'  shift 67
+	'*'  shift 68
+	'/'  shift 69
 	MAYOR_IGUAL  reduce 34
 	MENOR_IGUAL  reduce 34
 	DISTINTO  reduce 34
@@ -908,13 +939,13 @@ state 84
 	'-'  reduce 34
 
 
-state 85
+state 87
 	expresion : expresion '-' termino .  (35)
 	termino : termino . '*' factor  (37)
 	termino : termino . '/' factor  (38)
 
-	'*'  shift 66
-	'/'  shift 67
+	'*'  shift 68
+	'/'  shift 69
 	MAYOR_IGUAL  reduce 35
 	MENOR_IGUAL  reduce 35
 	DISTINTO  reduce 35
@@ -927,123 +958,123 @@ state 85
 	'-'  reduce 35
 
 
-state 86
+state 88
 	termino : termino '*' factor .  (37)
 
 	.  reduce 37
 
 
-state 87
+state 89
 	termino : termino '/' factor .  (38)
 
 	.  reduce 38
 
 
-state 88
-	iteracion : DO bloqueejecutable WHILE '(' condicion . ')'  (15)
-
-	')'  shift 94
-	.  error
-
-
-state 89
-	declaracion : tipodato FUN ID '(' ')' . bloque  (29)
-
-	BEGIN  shift 3
-	.  error
-
-	bloque  goto 95
-
-
 state 90
-	declaracion : tipodato FUN ID '(' parametro . ')' bloque  (28)
+	iteracion : DO bloqueejecutable WHILE '(' condicion . ')'  (15)
 
 	')'  shift 96
 	.  error
 
 
 state 91
-	parametro : tipodato . ID  (24)
+	declaracion : tipodato FUN ID '(' ')' . bloque  (29)
 
-	ID  shift 97
+	BEGIN  shift 3
 	.  error
+
+	bloque  goto 97
 
 
 state 92
-	invocacion : ID '(' expresion ')' .  (46)
+	declaracion : tipodato FUN ID '(' parametro . ')' bloque  (28)
 
-	.  reduce 46
+	')'  shift 98
+	.  error
 
 
 state 93
-	seleccion : IF '(' condicion ')' THEN bloqueejecutable . END_IF  (16)
-	seleccion : IF '(' condicion ')' THEN bloqueejecutable . ELSE bloqueejecutable END_IF  (17)
+	parametro : tipodato . ID  (24)
 
-	ELSE  shift 98
-	END_IF  shift 99
+	ID  shift 99
 	.  error
 
 
 state 94
+	invocacion : ID '(' expresion ')' .  (48)
+
+	.  reduce 48
+
+
+state 95
+	seleccion : IF '(' condicion ')' THEN bloqueejecutable . END_IF  (16)
+	seleccion : IF '(' condicion ')' THEN bloqueejecutable . ELSE bloqueejecutable END_IF  (17)
+
+	ELSE  shift 100
+	END_IF  shift 101
+	.  error
+
+
+state 96
 	iteracion : DO bloqueejecutable WHILE '(' condicion ')' .  (15)
 
 	.  reduce 15
 
 
-state 95
+state 97
 	declaracion : tipodato FUN ID '(' ')' bloque .  (29)
 
 	.  reduce 29
 
 
-state 96
+state 98
 	declaracion : tipodato FUN ID '(' parametro ')' . bloque  (28)
 
 	BEGIN  shift 3
 	.  error
 
-	bloque  goto 100
+	bloque  goto 102
 
 
-state 97
+state 99
 	parametro : tipodato ID .  (24)
 
 	.  reduce 24
 
 
-state 98
+state 100
 	seleccion : IF '(' condicion ')' THEN bloqueejecutable ELSE . bloqueejecutable END_IF  (17)
 
 	BEGIN  shift 25
 	.  error
 
-	bloqueejecutable  goto 101
+	bloqueejecutable  goto 103
 
 
-state 99
+state 101
 	seleccion : IF '(' condicion ')' THEN bloqueejecutable END_IF .  (16)
 
 	.  reduce 16
 
 
-state 100
+state 102
 	declaracion : tipodato FUN ID '(' parametro ')' bloque .  (28)
 
 	.  reduce 28
 
 
-state 101
+state 103
 	seleccion : IF '(' condicion ')' THEN bloqueejecutable ELSE bloqueejecutable . END_IF  (17)
 
-	END_IF  shift 102
+	END_IF  shift 104
 	.  error
 
 
-state 102
+state 104
 	seleccion : IF '(' condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF .  (17)
 
 	.  reduce 17
 
 
 33 terminals, 22 nonterminals
-47 grammar rules, 103 states
+49 grammar rules, 105 states

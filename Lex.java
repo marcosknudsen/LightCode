@@ -109,7 +109,7 @@ public class Lex {
 
         AccionSemantica matrizAS[][]={
                 // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro bl/tab  nl   eof
-                {strt, strt, lite, none, lite, lite, lite, none, none, none, stst, strt, lite, lite, lite,lite,null, none ,newl,none},//0
+                {strt, strt, lite, none, lite, lite, lite, none, none, none, stst, strt, lite, lite, lite,lite,null, none ,newl,none},//0 FIXEAR otro
                 {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid, fnid ,fnil,fnid},//1
                 {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste, aste ,astl,aste},//2
                 {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none},//3

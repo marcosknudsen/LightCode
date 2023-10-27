@@ -8,25 +8,25 @@
 
 %%
 
-programa:ID bloque {System.out.println("programa");}
+programa:ID bloque
 ;
 
-bloque: BEGIN ss END {System.out.println("bloque");}
+bloque: BEGIN ss END
 ;
 
-bloqueejecutable:BEGIN sse END {System.out.println("bloqueejecutable");}
+bloqueejecutable:BEGIN sse END
 ;
 
-ss: ss s {System.out.println("ss");}
-    | s  {System.out.println("s");}
+ss: ss s
+    | s
 ;
 
-s: declaracion {System.out.println("declaracion");}
-    |se {System.out.println("se");}
+s: declaracion
+    |se 
 ;
 
-sse:se {System.out.println("se");}
-    | sse se {System.out.println("sse");}
+sse:se
+    | sse se
 ;
 
 se:seleccion ';' {System.out.println("seleccion");}
@@ -34,52 +34,77 @@ se:seleccion ';' {System.out.println("seleccion");}
     | retorno ';' {System.out.println("retorno");}
     | asignacion ';' {System.out.println("asignacion");}
     | print ';' {System.out.println("print");}
+    | error ';' {System.out.println("sentencia invalida");}
 ;
 
 iteracion: DO bloqueejecutable WHILE '('condicion')' {System.out.println("do while");}
+    bloqueejecutable WHILE '(' condicion ')' {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
 ;
 
 seleccion: IF '('condicion')' THEN bloqueejecutable END_IF {System.out.println("if");}
     | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("if_else");}
+    | IF '(' condicion THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
+    | IF condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
+    | IF '(' condicion ')' bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": 'then' expected");}
+    | IF '(' condicion ')' THEN bloqueejecutable ELSE bloque {System.out.println("ERROR on line "+lex.line+": 'end_if' expected");}
+    | error ';' {System.out.println("ERROR on line "+lex.line+": seleccion inválida");}
 ;
 
-condicion: expresion '>' expresion {System.out.println(">");}
-        | expresion '<' expresion {System.out.println("<");}
-        | expresion '=' expresion {System.out.println("=");}
-        | expresion MAYOR_IGUAL expresion {System.out.println("Mayor igual");}
-        | expresion MENOR_IGUAL expresion {System.out.println("Menor igual");}
-        | expresion DISTINTO expresion {System.out.println("Distinto");}
+condicion: expresion '>' expresion {System.out.println("comparacion mayor");}
+        | expresion '<' expresion {System.out.println("comparacion menor");}
+        | expresion '=' expresion {System.out.println("comparacion igual");}
+        | expresion MAYOR_IGUAL expresion {System.out.println("comparacion mayor igual");}
+        | expresion MENOR_IGUAL expresion {System.out.println("comparacion menor igual");}
+        | expresion DISTINTO expresion {System.out.println("comparacion distinto");}
+        | expresion '>' {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
+        | expresion '<' {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
+        | expresion '=' {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
+        | expresion MAYOR_IGUAL {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
+        | expresion MENOR_IGUAL {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
+        | expresion DISTINTO {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
+        | error ';' {System.out.println("ERROR on line "+lex.line+": condicion inválida");}
 ;
 
-parametro: tipodato ID
+parametro: tipodato ID {System.out.println("parametro");}
+    | ID {System.out.println("ERROR on line "+lex.line+": datatype expected");}
+    | tipodato {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
 
-retorno: RETURN '('expresion')'
+retorno: RETURN '('expresion')' {System.out.println("retorno");}
+    | RETURN '(' expresion {System.out.println("ERROR on line "+lex.line+": ')' expected");}
+    | RETURN expresion ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
 ;
 
-asignacion: ID ASSIGN expresion
+asignacion: ID ASSIGN expresion {System.out.println("asignacion");}
+    | ID ASSIGN {System.out.println("ERROR on line "+lex.line+": expresion expected");}
+    | ASSIGN expresion {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
 
-print: PRINT '(' CADENA ')'
+print: PRINT '(' CADENA ')' {System.out.println("print");}
+    | PRINT CADENA ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
+    | PRINT '(' CADENA {System.out.println("ERROR on line "+lex.line+": ')' expected");}
+    | PRINT '(' ')' {System.out.println("ERROR on line "+lex.line+": String expected");}
 ;
 
-declaracion: tipodato FUN ID '(' parametro ')' bloque
-    | tipodato FUN ID'('')' bloque
-    | tipodato listavariables ';'
+declaracion: tipodato FUN ID '(' parametro ')' bloque {System.out.println("declaracion funcion c/parametro");}
+    | tipodato FUN ID'('')' bloque {System.out.println("declaracion funcion s/parametro");}
+    | tipodato listavariables ';' {System.out.println("declaracion variables");}
 ;
 
 tipodato: UINTEGER
     | LONGINT
 ;
 
-expresion: termino {System.out.println("Expresion");}
+expresion: termino
     | expresion '+' termino
     | expresion '-' termino
+    | expresion '+' {System.out.println("ERROR on line "+lex.line+": term expected");}
+    | expresion '-' {System.out.println("ERROR on line "+lex.line+": term expected");}
 ;
 
-termino: factor {System.out.println("termino");}
-    | termino '*' factor {System.out.println("factor");}
-    | termino '/' factor {System.out.println("factor");}
+termino: factor
+    | termino '*' factor
+    | termino '/' factor
 ;
 
 factor:ID
@@ -87,14 +112,14 @@ factor:ID
     |'-' UINTEGER
     | LONGINT
     | '-' LONGINT
-    |invocacion
+    |invocacion {System.out.println("invocacion");}
 ;
 
 listavariables: ID ',' listavariables
     | ID
 ;
 
-invocacion: ID '('')'
+invocacion: ID '('')' 
     | ID '('expresion')'
 ;
 %%
@@ -106,7 +131,7 @@ static Parser par=null;
 public static void main(String[] args) throws FileNotFoundException{
     System.out.println("Iniciando compilacion...");
     lex=new Lex(args[0]);
-    par=new Parser(true);
+    par=new Parser(false);
     par.run();
     System.out.println("Fin compilacion");
 }
