@@ -14,7 +14,7 @@ programa:ID bloque
 bloque: BEGIN ss END
 ;
 
-bloqueejecutable:BEGIN sse END
+bloqueejecutable: BEGIN ss END
 ;
 
 ss: ss s
@@ -22,11 +22,7 @@ ss: ss s
 ;
 
 s: declaracion
-    |se 
-;
-
-sse:se
-    | sse se
+    | se
 ;
 
 se:seleccion ';' {System.out.println("seleccion");}
@@ -37,11 +33,11 @@ se:seleccion ';' {System.out.println("seleccion");}
     | error ';' {System.out.println("sentencia invalida");}
 ;
 
-iteracion: DO bloqueejecutable WHILE '('condicion')' {System.out.println("do while");}
+iteracion: DO bloqueejecutable WHILE '('condicion')'
     bloqueejecutable WHILE '(' condicion ')' {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
 ;
 
-seleccion: IF '('condicion')' THEN bloqueejecutable END_IF {System.out.println("if");}
+seleccion: IF '('condicion')' THEN bloqueejecutable END_IF
     | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("if_else");}
     | IF '(' condicion THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
     | IF condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
@@ -62,7 +58,7 @@ condicion: expresion '>' expresion {System.out.println("comparacion mayor");}
         | expresion MAYOR_IGUAL {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
         | expresion MENOR_IGUAL {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
         | expresion DISTINTO {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
-        | error ';' {System.out.println("ERROR on line "+lex.line+": condicion inválida");}
+        | error {System.out.println("ERROR on line "+lex.line+": condicion inválida");}
 ;
 
 parametro: tipodato ID {System.out.println("parametro");}
@@ -70,17 +66,17 @@ parametro: tipodato ID {System.out.println("parametro");}
     | tipodato {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
 
-retorno: RETURN '('expresion')' {System.out.println("retorno");}
+retorno: RETURN '('expresion')'
     | RETURN '(' expresion {System.out.println("ERROR on line "+lex.line+": ')' expected");}
     | RETURN expresion ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
 ;
 
-asignacion: ID ASSIGN expresion {System.out.println("asignacion");}
+asignacion: ID ASSIGN expresion {$$=new ParserVal(crear_terceto(":=",$1,$3));}
     | ID ASSIGN {System.out.println("ERROR on line "+lex.line+": expresion expected");}
     | ASSIGN expresion {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
 
-print: PRINT '(' CADENA ')' {System.out.println("print");}
+print: PRINT '(' CADENA ')'
     | PRINT CADENA ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
     | PRINT '(' CADENA {System.out.println("ERROR on line "+lex.line+": ')' expected");}
     | PRINT '(' ')' {System.out.println("ERROR on line "+lex.line+": String expected");}
@@ -96,15 +92,13 @@ tipodato: UINTEGER
 ;
 
 expresion: termino
-    | expresion '+' termino
-    | expresion '-' termino
-    | expresion '+' {System.out.println("ERROR on line "+lex.line+": term expected");}
-    | expresion '-' {System.out.println("ERROR on line "+lex.line+": term expected");}
+    | expresion '+' termino {$$=new ParserVal(crear_terceto("+",$1,$3));}
+    | expresion '-' termino {$$=new ParserVal(crear_terceto("-",$1,$3));}
 ;
 
 termino: factor
-    | termino '*' factor
-    | termino '/' factor
+    | termino '*' factor {$$=new ParserVal(crear_terceto("*",$1,$3));}
+    | termino '/' factor {$$=new ParserVal(crear_terceto("/",$1,$3));}
 ;
 
 factor:ID
@@ -124,9 +118,10 @@ invocacion: ID '('')'
 ;
 %%
 
-
 static Lex lex=null;
 static Parser par=null;
+int index=0;
+Terceto reglas[];
 
 public static void main(String[] args) throws FileNotFoundException{
     System.out.println("Iniciando compilacion...");
@@ -139,10 +134,10 @@ public static void main(String[] args) throws FileNotFoundException{
 
 int yylex(){
     int token;
+    yylval=new ParserVal(lex.yylval);
     try {
       token = lex.getToken();
     } catch (IOException e) {
-      // TODO Auto-generated catch block
       token=-1;
     }
     return token;
@@ -150,4 +145,9 @@ int yylex(){
 
 void yyerror(String s){
     System.out.println(s);
+}
+
+String crear_terceto(String operando,ParserVal a,ParserVal b){
+    reglas[++index]=new Terceto(operando,a,b); 
+    return "["+Integer.toString(index)+"]";
 }

@@ -15,7 +15,7 @@ public class finishConsNL extends AccionSemantica {
                                                 new Simbolo(Integer.parseInt(lex.getCadena()) > 65535 ? "longint"
                                                                 : "uinteger", "Constante"));
                         codigoFuente.reset();
-                        lex.yylval=new ParserVal(lex.getCadena());
+                        lex.yylval=lex.getCadena();
                         if (Integer.parseInt(lex.getCadena()) > 65535)
                                 return new Pointer(273);
                         else
