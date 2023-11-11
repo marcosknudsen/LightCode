@@ -43,12 +43,11 @@ seleccion: IF '('condicion')' THEN bloqueejecutable END_IF
     | IF condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
     | IF '(' condicion ')' bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": 'then' expected");}
     | IF '(' condicion ')' THEN bloqueejecutable ELSE bloque {System.out.println("ERROR on line "+lex.line+": 'end_if' expected");}
-    | error ';' {System.out.println("ERROR on line "+lex.line+": seleccion inválida");}
 ;
 
-condicion: expresion '>' expresion {System.out.println("comparacion mayor");}
-        | expresion '<' expresion {System.out.println("comparacion menor");}
-        | expresion '=' expresion {System.out.println("comparacion igual");}
+condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));}
+        | expresion '<' expresion  {$$=new ParserVal(crear_terceto("<",$1,$3));}
+        | expresion '=' expresion  {$$=new ParserVal(crear_terceto("=",$1,$3));}
         | expresion MAYOR_IGUAL expresion {System.out.println("comparacion mayor igual");}
         | expresion MENOR_IGUAL expresion {System.out.println("comparacion menor igual");}
         | expresion DISTINTO expresion {System.out.println("comparacion distinto");}
@@ -58,7 +57,6 @@ condicion: expresion '>' expresion {System.out.println("comparacion mayor");}
         | expresion MAYOR_IGUAL {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
         | expresion MENOR_IGUAL {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
         | expresion DISTINTO {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
-        | error {System.out.println("ERROR on line "+lex.line+": condicion inválida");}
 ;
 
 parametro: tipodato ID {System.out.println("parametro");}
@@ -71,7 +69,7 @@ retorno: RETURN '('expresion')'
     | RETURN expresion ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
 ;
 
-asignacion: ID ASSIGN expresion {$$=new ParserVal(crear_terceto(":=",$1,$3));}
+asignacion: ID ASSIGN expresion {}
     | ID ASSIGN {System.out.println("ERROR on line "+lex.line+": expresion expected");}
     | ASSIGN expresion {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
