@@ -21,7 +21,7 @@ public class FinishConstante extends AccionSemantica {
                                 return new Pointer(272);
 
                 } catch (NumberFormatException e) {
-                        System.out.println("Error: El valor ingresado no se encuentra dentro del rango aceptado");
+                        System.out.println("ERROR on line "+lex.line+": El valor ingresado no se encuentra dentro del rango aceptado");
                         return new Pointer(-1);
                 }
         }
