@@ -1,6 +1,7 @@
 %{
     import java.io.FileNotFoundException;
     import java.io.IOException;
+    import java.util.ArrayList;
 %}
 
 %token IF THEN ID ASSIGN ELSE BEGIN END END_IF PRINT WHILE DO FUN RETURN CTE CADENA UINTEGER LONGINT MAYOR_IGUAL MENOR_IGUAL DISTINTO
@@ -33,11 +34,11 @@ se:seleccion ';' {System.out.println("seleccion");}
     | error ';' {System.out.println("sentencia invalida");}
 ;
 
-iteracion: DO bloqueejecutable WHILE '('condicion')'
+iteracion: DO bloqueejecutable WHILE '('condicion')' {System.out.println("do_while");}
     bloqueejecutable WHILE '(' condicion ')' {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
 ;
 
-seleccion: IF '('condicion')' THEN bloqueejecutable END_IF
+seleccion: IF '('condicion')' THEN bloqueejecutable END_IF {System.out.println("if_then");}
     | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("if_else");}
     | IF '(' condicion THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
     | IF condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
@@ -48,9 +49,9 @@ seleccion: IF '('condicion')' THEN bloqueejecutable END_IF
 condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));}
         | expresion '<' expresion  {$$=new ParserVal(crear_terceto("<",$1,$3));}
         | expresion '=' expresion  {$$=new ParserVal(crear_terceto("=",$1,$3));}
-        | expresion MAYOR_IGUAL expresion {System.out.println("comparacion mayor igual");}
-        | expresion MENOR_IGUAL expresion {System.out.println("comparacion menor igual");}
-        | expresion DISTINTO expresion {System.out.println("comparacion distinto");}
+        | expresion MAYOR_IGUAL expresion {$$=new ParserVal(crear_terceto(">=",$1,$3));}
+        | expresion MENOR_IGUAL expresion {$$=new ParserVal(crear_terceto("<=",$1,$3));}
+        | expresion DISTINTO expresion {$$=new ParserVal(crear_terceto("<>",$1,$3));}
         | expresion '>' {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
         | expresion '<' {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
         | expresion '=' {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
@@ -69,7 +70,7 @@ retorno: RETURN '('expresion')'
     | RETURN expresion ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
 ;
 
-asignacion: ID ASSIGN expresion {}
+asignacion: ID ASSIGN expresion {$$=new ParserVal(crear_terceto(":=",$1,$3));}
     | ID ASSIGN {System.out.println("ERROR on line "+lex.line+": expresion expected");}
     | ASSIGN expresion {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
@@ -119,7 +120,7 @@ invocacion: ID '('')'
 static Lex lex=null;
 static Parser par=null;
 int index=0;
-Terceto reglas[];
+static ArrayList<Terceto> reglas=new ArrayList<Terceto>();
 
 public static void main(String[] args) throws FileNotFoundException{
     System.out.println("Iniciando compilacion...");
@@ -146,6 +147,7 @@ void yyerror(String s){
 }
 
 String crear_terceto(String operando,ParserVal a,ParserVal b){
-    reglas[++index]=new Terceto(operando,a,b); 
-    return "["+Integer.toString(index)+"]";
+    Terceto t=new Terceto(operando, a, b);
+    reglas.add(t);
+    return "["+Integer.toString(reglas.indexOf(t))+"]";
 }
