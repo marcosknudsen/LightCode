@@ -19,6 +19,12 @@ bloque: BEGIN ss END
 bloqueejecutable: BEGIN ss END
 ;
 
+bloquewhile: beginwhile ss END 
+;
+
+beginwhile: BEGIN {pila.push(reglas.size());}
+;
+
 bloquethen: BEGIN ss END {
     pointer=pila.pop();
     Terceto t = reglas.get(pointer);
@@ -28,9 +34,6 @@ bloquethen: BEGIN ss END {
     t.b = new ParserVal(reglas.size());
     reglas.set(pointer, t);
     pila.push(reglas.size()-1);$$=PV;}
-;
-
-bloqueelse: BEGIN ss END {}
 ;
 
 ss: ss s
@@ -52,22 +55,39 @@ se:seleccion ';' {pointer=pila.pop();
     | error ';' {System.out.println("ERROR on line "+lex.line+" sentencia invalida");}
 ;
 
-iteracion: DO bloqueejecutable WHILE condicionwhile
-    | bloqueejecutable WHILE condicionwhile {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
+iteracion: DO bloquewhile WHILE condicionwhile {    
+    crear_terceto(
+      "BF",
+      new ParserVal("[" + (reglas.size() - 1) + "]"),
+      new ParserVal("-")
+    );
+    pila.push(reglas.size());
+    crear_terceto(
+      "BI",
+      new ParserVal("-"),
+      new ParserVal("-")
+    );
+    t=reglas.get(pila.peek()-1);
+    t.b=new ParserVal(reglas.size());
+    reglas.set(pila.pop()-1,t);
+    t=reglas.get(reglas.size()-1);
+    t.b=new ParserVal("["+pila.pop()+"]");
+    }
+    | bloquewhile WHILE condicionwhile {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
 ;
 
 seleccion: IF condicionif THEN bloquethen END_IF
-    | IF condicionif THEN bloquethen ELSE bloqueelse END_IF
-    | IF '(' condicion THEN bloquethen ELSE bloqueelse END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
-    | IF condicion ')' THEN bloquethen ELSE bloqueelse END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
-    | IF condicionif bloquethen ELSE bloqueelse END_IF {System.out.println("ERROR on line "+lex.line+": 'then' expected");}
-    | IF condicionif THEN bloquethen ELSE bloqueelse {System.out.println("ERROR on line "+lex.line+": 'end_if' expected");}
+    | IF condicionif THEN bloquethen ELSE bloqueejecutable END_IF
+    | IF '(' condicion THEN bloquethen ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
+    | IF condicion ')' THEN bloquethen ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
+    | IF condicionif bloquethen ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": 'then' expected");}
+    | IF condicionif THEN bloquethen ELSE bloqueejecutable {System.out.println("ERROR on line "+lex.line+": 'end_if' expected");}
 ;
 
 condicionif: '(' condicion ')' {ParserVal PV = new ParserVal(crear_terceto("BF",new ParserVal("["+(reglas.size()-1)+"]"),new ParserVal("-")));pila.push(reglas.size()-1);$$=PV;}
 ;
 
-condicionwhile: '(' condicion ')' {ParserVal PV = new ParserVal(crear_terceto("BF",new ParserVal("["+(reglas.size()-1)+"]"),new ParserVal("-")));pila.push(reglas.size()-1);$$=PV;}
+condicionwhile: '(' condicion ')' {}
 ;
 
 condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));}
