@@ -8,8 +8,16 @@ public class Terceto {
         this.b=b;
     }
 
+    public String showable(ParserVal a){
+        if (a.sval==null){
+            return String.valueOf(a.ival);
+        }
+        return a.sval;
+    }
+
     @Override
     public String toString() {
-        return this.operando+" "+this.a+" "+this.b;
+
+        return this.operando+" "+showable(this.a)+" "+showable(this.b);
     }
 }

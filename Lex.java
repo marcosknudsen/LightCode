@@ -68,7 +68,7 @@ public class Lex {
         AccionSemantica menl = new finishMenor();
         AccionSemantica mayl = new FinishMayor();
         AccionSemantica assi = new Assign();
-
+        AccionSemantica warP = new WarningPoint();
  
         // L 1
         // D 2
@@ -92,33 +92,33 @@ public class Lex {
 
         // ESTADO TRAMPA -2
         int matrizestados[][] = {
-                //        L  D  /  *  +  -  =  <  >  :  "  @  (  )  ,  ; otr bl/tab  nl eof 
-                        { 1, 7,-1, 2,-1,-1,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2,    0  , 0 ,-1 }, // 0
-                        { 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,   -1  , -1,-1 }, // 1
-                        {-1,-1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  , -1,-1 }, // 2
-                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,    3  , 3 ,-2}, // 3
-                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,    3  , 3 ,-2}, // 4
-                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  ,-1 ,-1 }, // 5
-                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  ,-1 ,-1 }, // 6
-                        {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  ,-1 ,-1 }, // 7
-                        {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,   -2  ,-2 ,-2 }, // 8
-                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9,    9  ,-1 , 9 }, // 9
+                //        L  D  /  *  +  -  =  <  >  :  "  @  (  )  ,  ; otr bl/tab  nl eof . 
+                        { 1, 7,-1, 2,-1,-1,-1, 6, 5, 8, 9, 1,-1,-1,-1,-1,-2,    0  , 0 ,-1, 0}, // 0
+                        { 1, 1,-1,-1,-1,-1,-1,-1,-1,-1,-1, 1,-1,-1,-1,-1,-1,   -1  , -1,-1, 1 }, // 1
+                        {-1,-1, 3,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  , -1,-1, 2}, // 2
+                        { 3, 3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,    3  , 3 ,-2, 3}, // 3
+                        { 3, 3, 4, 0, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,    3  , 3 ,-2, 4}, // 4
+                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  ,-1 ,-1, 5 }, // 5
+                        {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  ,-1 ,-1, 6 }, // 6
+                        {-1, 7,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,   -1  ,-1 ,-1, 7 }, // 7
+                        {-2,-2,-2,-2,-2,-2,-1,-2,-2,-2,-2,-2,-2,-2,-2,-2,-2,   -2  ,-2 ,-2, 8 }, // 8
+                        { 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,-1, 9, 9, 9, 9, 9, 9,    9  ,-1 , 9, 9 }, // 9
         };
 
 
 
         AccionSemantica matrizAS[][]={
-                // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro bl/tab  nl   eof
-                {strt, strt, lite, none, lite, lite, lite, none, none, none, stst, strt, lite, lite, lite,lite,null, none ,newl,none},//0 FIXEAR otro
-                {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid, fnid ,fnil,fnid},//1
-                {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste, aste ,astl,aste},//2
-                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none},//3
-                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none},//4
-                {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo, mayo ,mayl,mayo},//5
-                {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno, meno ,menl,meno},//6
-                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct, fnct ,fncn,fnct},//7
-                {none, none, none, none, none, none, assi, none, none, none, none, none, none, none, none,none,none, none ,none,none},//8         
-                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ, writ ,wnst,none},//9
+                // L     D    /      *     +     -    =     <     >      :     "     @     (    )      ,    ;  otro bl/tab  nl   eof  .
+                {strt, strt, lite, none, lite, lite, lite, none, none, none, stst, strt, lite, lite, lite,lite,null, none ,newl,none,warP},//0
+                {writ, writ, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, fnid, writ, fnid, fnid, fnid,fnid,fnid, fnid ,fnil,fnid,warP},//1
+                {aste, aste, none, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste, aste,aste,aste, aste ,astl,aste,warP},//2
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none,warP},//3
+                {none, none, none, none, none, none, none, none, none, none, none, none, none, none, none,none,none, none ,newl,none,warP},//4
+                {mayo, mayo, mayo, mayo, mayo, mayo, meql, mayo, mayo, mayo, mayo, mayo, mayo, mayo, mayo,mayo,mayo, mayo ,mayl,mayo,warP},//5
+                {meno, meno, meno, meno, meno, meno, meoi, meno, dist, meno, meno, meno, meno, meno, meno,meno,meno, meno ,menl,meno,warP},//6
+                {fnct, writ, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct, fnct,fnct,fnct, fnct ,fncn,fnct,warP},//7
+                {none, none, none, none, none, none, assi, none, none, none, none, none, none, none, none,none,none, none ,none,none,warP},//8         
+                {writ, writ, writ, writ, writ, writ, writ, writ, writ, writ, fnst, writ, writ, writ, writ,writ,writ, writ ,wnst,none,warP},//9
         };
 
         public int getToken() throws IOException {
@@ -159,6 +159,9 @@ public class Lex {
                         value = 19;
                 } else
                         switch ((char) caracterActual) {
+                                case '.':
+                                        value=20;
+                                        break;
                                 case '/':
                                         value = 2;
                                         break;

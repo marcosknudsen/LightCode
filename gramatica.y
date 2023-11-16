@@ -2,6 +2,7 @@
     import java.io.FileNotFoundException;
     import java.io.IOException;
     import java.util.ArrayList;
+    import java.util.Stack;
 %}
 
 %token IF THEN ID ASSIGN ELSE BEGIN END END_IF PRINT WHILE DO FUN RETURN CTE CADENA UINTEGER LONGINT MAYOR_IGUAL MENOR_IGUAL DISTINTO
@@ -18,6 +19,20 @@ bloque: BEGIN ss END
 bloqueejecutable: BEGIN ss END
 ;
 
+bloquethen: BEGIN ss END {
+    pointer=pila.pop();
+    Terceto t = reglas.get(pointer);
+    PV = new ParserVal(
+      crear_terceto("BI",new ParserVal("-"),new ParserVal("-"))
+    );
+    t.b = new ParserVal(reglas.size());
+    reglas.set(pointer, t);
+    pila.push(reglas.size()-1);$$=PV;}
+;
+
+bloqueelse: BEGIN ss END {}
+;
+
 ss: ss s
     | s
 ;
@@ -26,24 +41,33 @@ s: declaracion
     | se
 ;
 
-se:seleccion ';' {System.out.println("seleccion");}
-    | iteracion';' {System.out.println("iteracion");}
-    | retorno ';' {System.out.println("retorno");}
-    | asignacion ';' {System.out.println("asignacion");}
-    | print ';' {System.out.println("print");}
-    | error ';' {System.out.println("sentencia invalida");}
+se:seleccion ';' {pointer=pila.pop();
+    Terceto t = reglas.get(pointer);
+    t.b = new ParserVal(reglas.size());
+    reglas.set(pointer, t);}
+    | iteracion';'
+    | retorno ';'
+    | asignacion ';'
+    | print ';'
+    | error ';' {System.out.println("ERROR on line "+lex.line+" sentencia invalida");}
 ;
 
-iteracion: DO bloqueejecutable WHILE '('condicion')' {System.out.println("do_while");}
-    bloqueejecutable WHILE '(' condicion ')' {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
+iteracion: DO bloqueejecutable WHILE condicionwhile
+    | bloqueejecutable WHILE condicionwhile {System.out.println("ERROR on line "+lex.line+" 'do' expected");}
 ;
 
-seleccion: IF '('condicion')' THEN bloqueejecutable END_IF {System.out.println("if_then");}
-    | IF '('condicion')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("if_else");}
-    | IF '(' condicion THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
-    | IF condicion ')' THEN bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
-    | IF '(' condicion ')' bloqueejecutable ELSE bloqueejecutable END_IF {System.out.println("ERROR on line "+lex.line+": 'then' expected");}
-    | IF '(' condicion ')' THEN bloqueejecutable ELSE bloque {System.out.println("ERROR on line "+lex.line+": 'end_if' expected");}
+seleccion: IF condicionif THEN bloquethen END_IF
+    | IF condicionif THEN bloquethen ELSE bloqueelse END_IF
+    | IF '(' condicion THEN bloquethen ELSE bloqueelse END_IF {System.out.println("ERROR on line "+lex.line+": ')' expected");}
+    | IF condicion ')' THEN bloquethen ELSE bloqueelse END_IF {System.out.println("ERROR on line "+lex.line+": '(' expected");}
+    | IF condicionif bloquethen ELSE bloqueelse END_IF {System.out.println("ERROR on line "+lex.line+": 'then' expected");}
+    | IF condicionif THEN bloquethen ELSE bloqueelse {System.out.println("ERROR on line "+lex.line+": 'end_if' expected");}
+;
+
+condicionif: '(' condicion ')' {ParserVal PV = new ParserVal(crear_terceto("BF",new ParserVal("["+(reglas.size()-1)+"]"),new ParserVal("-")));pila.push(reglas.size()-1);$$=PV;}
+;
+
+condicionwhile: '(' condicion ')' {ParserVal PV = new ParserVal(crear_terceto("BF",new ParserVal("["+(reglas.size()-1)+"]"),new ParserVal("-")));pila.push(reglas.size()-1);$$=PV;}
 ;
 
 condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));}
@@ -60,7 +84,7 @@ condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));
         | expresion DISTINTO {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
 ;
 
-parametro: tipodato ID {System.out.println("parametro");}
+parametro: tipodato ID
     | ID {System.out.println("ERROR on line "+lex.line+": datatype expected");}
     | tipodato {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
@@ -81,18 +105,18 @@ print: PRINT '(' CADENA ')'
     | PRINT '(' ')' {System.out.println("ERROR on line "+lex.line+": String expected");}
 ;
 
-declaracion: tipodato FUN ID '(' parametro ')' bloque {System.out.println("declaracion funcion c/parametro");}
-    | tipodato FUN ID'('')' bloque {System.out.println("declaracion funcion s/parametro");}
-    | tipodato listavariables ';' {System.out.println("declaracion variables");}
+declaracion: tipodato FUN ID '(' parametro ')' bloque
+    | tipodato FUN ID'('')' bloque
+    | tipodato listavariables ';'
 ;
 
-tipodato: UINTEGER
-    | LONGINT
+tipodato: UINTEGER  {$$=$1;}
+    | LONGINT  {$$=$1;}
 ;
 
 expresion: termino
     | expresion '+' termino {$$=new ParserVal(crear_terceto("+",$1,$3));}
-    | expresion '-' termino {$$=new ParserVal(crear_terceto("-",$1,$3));}
+    | expresion '-' termino {$$=new ParserVal(crear_terceto("-",new ParserVal($1.sval),new ParserVal($3.sval)));}
 ;
 
 termino: factor
@@ -105,11 +129,11 @@ factor:ID
     |'-' UINTEGER
     | LONGINT
     | '-' LONGINT
-    |invocacion {System.out.println("invocacion");}
+    |invocacion
 ;
 
 listavariables: ID ',' listavariables
-    | ID
+    | ID 
 ;
 
 invocacion: ID '('')' 
@@ -121,6 +145,11 @@ static Lex lex=null;
 static Parser par=null;
 int index=0;
 static ArrayList<Terceto> reglas=new ArrayList<Terceto>();
+static Stack<Integer> pila = new Stack<>();
+ParserVal PV;
+
+int pointer;
+Terceto t;
 
 public static void main(String[] args) throws FileNotFoundException{
     System.out.println("Iniciando compilacion...");
@@ -128,14 +157,16 @@ public static void main(String[] args) throws FileNotFoundException{
     par=new Parser(false);
     par.run();
     System.out.println("Fin compilacion");
+    mostrarReglas(reglas);
+    
 }
 
 
 int yylex(){
     int token;
-    yylval=new ParserVal(lex.yylval);
     try {
       token = lex.getToken();
+      yylval=new ParserVal(lex.yylval);
     } catch (IOException e) {
       token=-1;
     }
@@ -150,4 +181,23 @@ String crear_terceto(String operando,ParserVal a,ParserVal b){
     Terceto t=new Terceto(operando, a, b);
     reglas.add(t);
     return "["+Integer.toString(reglas.indexOf(t))+"]";
+}
+
+
+static int mostrarPila(Stack<Integer> pila){
+    if (pila.empty())
+        System.out.println("Pila Vacía");
+    else
+        for (int i=0;i<pila.size();i++)
+            System.out.println(pila.get(i));
+    return 0;
+}
+
+static int mostrarReglas(ArrayList<Terceto> reglas){
+    if (reglas.size()==0)
+        System.out.println("No hay reglas");
+    else
+        for (int i=0;i<reglas.size();i++)
+            System.out.println("["+i+"] "+reglas.get(i));
+    return 0;
 }
