@@ -135,32 +135,32 @@ declaracion: tipodato FUN identificadorfunct '(' parametro ')' bloquefunct {
         ArrayList<String> errores=new ArrayList<String>();
         if(buscarVariable($3.sval)!=null)
             errores.add("declared");
-        if(pilaString.pop()!=$1.sval)
+        if(pilaString.pop().compareTo($1.sval)!=0)
             errores.add("typeNotMatch");
         $$=new ParserVal(crear_terceto("endfun",$3,new ParserVal("-"),errores));
-        if (!errores.contains("declared")){
-            guardarVariable($3.sval,new Simbolo($1.sval,"Fun"));
-        };
         t=reglas.get(pila.peek()-1);
         t.a=$3;
         t.b=$5;
         reglas.set(pila.pop()-1,t);
         colaAmbito.remove(colaAmbito.size()-1);
+        if (!errores.contains("declared")){
+            guardarVariable($3.sval,new Simbolo($1.sval,"Fun"));
+        };
     }
     | tipodato FUN identificadorfunct'('')' bloquefunct {
         ArrayList<String> errores=new ArrayList<String>();
         if(buscarVariable($3.sval)!=null)
             errores.add("declared");
-        if(pilaString.pop()!=$1.sval)
+        if(pilaString.pop().compareTo($1.sval)!=0)
             errores.add("typeNotMatch");
         $$=new ParserVal(crear_terceto("endfun",$3,new ParserVal("-"),errores));
-        if (!errores.contains("declared")){
-            guardarVariable($3.sval,new Simbolo($1.sval,"Fun"));
-        };
         t=reglas.get(pila.peek()-1);
         t.a=new ParserVal($3.sval);
         reglas.set(pila.pop()-1,t);
         colaAmbito.remove(colaAmbito.size()-1);
+        if (!errores.contains("declared")){
+            guardarVariable($3.sval,new Simbolo($1.sval,"Fun"));
+        };
     }
     | tipodato listavariables ';' {
         for (int i=0; i<variables.size(); i++) {
@@ -169,7 +169,8 @@ declaracion: tipodato FUN identificadorfunct '(' parametro ')' bloquefunct {
                 errores.add("declared");
             crear_terceto("decl",$1,new ParserVal(variables.get(i)),errores);
             guardarVariable(variables.get(i),new Simbolo($1.sval,"Var"));
-        };variables.clear();
+        }
+        variables.clear();
     }
 ;
 
@@ -193,7 +194,7 @@ expresion: termino
         if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
             errores.add("datatype missmatch");    
         }
-        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
+        $$=new ParserVal(crear_terceto("-",$1,$3,errores));}
 ;
 
 termino: factor
@@ -202,13 +203,13 @@ termino: factor
         if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
             errores.add("datatype missmatch");    
         }
-        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
+        $$=new ParserVal(crear_terceto("*",$1,$3,errores));}
     | termino '/' factor {
         ArrayList<String> errores=new ArrayList<String>();
         if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
             errores.add("datatype missmatch");    
         }
-        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
+        $$=new ParserVal(crear_terceto("/",$1,$3,errores));}
 ;
 
 factor:ID
@@ -223,8 +224,14 @@ listavariables: ID ',' listavariables {variables.add($1.sval);}
     | ID {variables.add($1.sval);}
 ;
 
-invocacion: ID '('')' {$$=new ParserVal(crear_terceto("exec",$1,new ParserVal("-")));}
-    | ID '('expresion')' {$$=new ParserVal(crear_terceto("exec",$1,$3));}
+invocacion: ID '('')' {$$=new ParserVal(crear_terceto("exec",$1,new ParserVal("-")));pilaString.push(buscarVariable($1.sval).tipo);}
+    | ID '('expresion')' {
+        ArrayList<String> errores=new ArrayList<String>();
+        if (buscarVariable($1.sval).tipo.compareTo(buscarVariable($3.sval).tipo)!=0){
+            errores.add("datatype missmatch");    
+        }
+        pilaString.push(buscarVariable($1.sval).tipo);
+        $$=new ParserVal(crear_terceto("exec",$1,$3,errores));}
 ;
 %%
 
@@ -337,4 +344,9 @@ void guardarVariable(String nombre,Simbolo s){
     }
     nombre=sufijo+nombre;
     lex.tablaSimbolos.put(nombre,s);
+}
+
+static int decode(String str){
+    str = str.substring(1, str.length() - 1);
+    return Integer.valueOf(str);
 }
