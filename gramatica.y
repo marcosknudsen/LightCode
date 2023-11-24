@@ -226,12 +226,12 @@ listavariables: ID ',' listavariables {variables.add($1.sval);}
 
 invocacion: ID '('')' {$$=new ParserVal(crear_terceto("exec",$1,new ParserVal("-")));pilaString.push(buscarVariable($1.sval).tipo);}
     | ID '('expresion')' {
-        ArrayList<String> errores=new ArrayList<String>();
+        /* ArrayList<String> errores=new ArrayList<String>();
         if (buscarVariable($1.sval).tipo.compareTo(buscarVariable($3.sval).tipo)!=0){
             errores.add("datatype missmatch");    
         }
-        pilaString.push(buscarVariable($1.sval).tipo);
-        $$=new ParserVal(crear_terceto("exec",$1,$3,errores));}
+        pilaString.push(buscarVariable($1.sval).tipo); */
+        $$=new ParserVal(crear_terceto("exec",$1,$3));}
 ;
 %%
 
