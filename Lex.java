@@ -15,8 +15,7 @@ public class Lex {
         int line=1;
 
         public Lex(String filename) throws FileNotFoundException {
-                this.codigoFuente = new BufferedReader(
-                                new FileReader(filename));
+                this.codigoFuente = new BufferedReader(new FileReader(filename));
                 tablaPRes.put("if", 257);
                 tablaPRes.put("then", 258);
                 tablaPRes.put("else", 261);

@@ -6,4 +6,8 @@ public class Simbolo {
         this.tipo=tipo;
         this.uso=uso;
     }
+
+    public String toString(){
+        return this.tipo+" "+this.uso;
+    }
 }

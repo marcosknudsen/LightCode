@@ -22,6 +22,12 @@ bloqueejecutable: BEGIN ss END
 bloquewhile: beginwhile ss END 
 ;
 
+bloquefunct: beginfunct ss END
+;
+
+beginfunct: BEGIN {$$=new ParserVal(crear_terceto("begfunct",new ParserVal("-"),new ParserVal("-")));pila.push(reglas.size());}
+;
+
 beginwhile: BEGIN {pila.push(reglas.size());}
 ;
 
@@ -87,7 +93,7 @@ seleccion: IF condicionif THEN bloquethen END_IF
 condicionif: '(' condicion ')' {ParserVal PV = new ParserVal(crear_terceto("BF",new ParserVal("["+(reglas.size()-1)+"]"),new ParserVal("-")));pila.push(reglas.size()-1);$$=PV;}
 ;
 
-condicionwhile: '(' condicion ')' {}
+condicionwhile: '(' condicion ')'
 ;
 
 condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));}
@@ -104,12 +110,12 @@ condicion: expresion '>' expresion  {$$=new ParserVal(crear_terceto(">",$1,$3));
         | expresion DISTINTO {System.out.println("ERROR on line "+lex.line+": second expresion expected");}
 ;
 
-parametro: tipodato ID
+parametro: tipodato ID {guardarVariable($2.sval,new Simbolo($1.sval,"parametro"));$$=$2;pilaString.push($1.sval);}
     | ID {System.out.println("ERROR on line "+lex.line+": datatype expected");}
     | tipodato {System.out.println("ERROR on line "+lex.line+": identifier expected");}
 ;
 
-retorno: RETURN '('expresion')'
+retorno: RETURN '('expresion')' {$$=new ParserVal(crear_terceto("ret",$3,new ParserVal("-")));}
     | RETURN '(' expresion {System.out.println("ERROR on line "+lex.line+": ')' expected");}
     | RETURN expresion ')' {System.out.println("ERROR on line "+lex.line+": '(' expected");}
 ;
@@ -125,9 +131,44 @@ print: PRINT '(' CADENA ')'
     | PRINT '(' ')' {System.out.println("ERROR on line "+lex.line+": String expected");}
 ;
 
-declaracion: tipodato FUN ID '(' parametro ')' bloque
-    | tipodato FUN ID'('')' bloque
-    | tipodato listavariables ';'
+declaracion: tipodato FUN ID '(' parametro ')' bloquefunct {
+        ArrayList<String> errores=new ArrayList<String>();
+        if(buscarVariable($3.sval)!=null)
+            errores.add("declared");
+        if(pilaString.pop()!=$1.sval)
+            errores.add("typeNotMatch");
+        $$=new ParserVal(crear_terceto("endfun",$3,new ParserVal("-"),errores));
+        if (!errores.contains("declared")){
+            guardarVariable($3.sval,new Simbolo($1.sval,"Fun"));
+        };
+        t=reglas.get(pila.peek()-1);
+        t.a=$3;
+        t.b=$5;
+        reglas.set(pila.pop()-1,t);
+    }
+    | tipodato FUN ID'('')' bloquefunct {
+        ArrayList<String> errores=new ArrayList<String>();
+        if(buscarVariable($3.sval)!=null)
+            errores.add("declared");
+        if(pilaString.pop()!=$1.sval)
+            errores.add("typeNotMatch");
+        $$=new ParserVal(crear_terceto("endfun",$3,new ParserVal("-"),errores));
+        if (!errores.contains("declared")){
+            guardarVariable($3.sval,new Simbolo($1.sval,"Fun"));
+        };
+        t=reglas.get(pila.peek()-1);
+        t.a=new ParserVal($3.sval);
+        reglas.set(pila.pop()-1,t);
+    }
+    | tipodato listavariables ';' {
+        for (int i=0; i<variables.size(); i++) {
+            ArrayList<String> errores=new ArrayList<String>();
+            if(lex.tablaSimbolos.get("m:"+$3.sval)!=null)
+                errores.add("declared");
+            crear_terceto("decl",$1,new ParserVal(variables.get(i)),errores);
+            guardarVariable(variables.get(i),new Simbolo($1.sval,"Var"));
+        };variables.clear();
+    }
 ;
 
 tipodato: UINTEGER  {$$=$1;}
@@ -135,13 +176,33 @@ tipodato: UINTEGER  {$$=$1;}
 ;
 
 expresion: termino
-    | expresion '+' termino {$$=new ParserVal(crear_terceto("+",$1,$3));}
-    | expresion '-' termino {$$=new ParserVal(crear_terceto("-",new ParserVal($1.sval),new ParserVal($3.sval)));}
+    | expresion '+' termino {
+        ArrayList<String> errores=new ArrayList<String>();
+        if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
+            errores.add("datatype missmatch");    
+        }
+        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
+    | expresion '-' termino {
+        ArrayList<String> errores=new ArrayList<String>();
+        if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
+            errores.add("datatype missmatch");    
+        }
+        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
 ;
 
 termino: factor
-    | termino '*' factor {$$=new ParserVal(crear_terceto("*",$1,$3));}
-    | termino '/' factor {$$=new ParserVal(crear_terceto("/",$1,$3));}
+    | termino '*' factor {
+        ArrayList<String> errores=new ArrayList<String>();
+        if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
+            errores.add("datatype missmatch");    
+        }
+        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
+    | termino '/' factor {
+        ArrayList<String> errores=new ArrayList<String>();
+        if (buscarVariable($1.sval).tipo!=buscarVariable($3.sval).tipo){
+            errores.add("datatype missmatch");    
+        }
+        $$=new ParserVal(crear_terceto("+",$1,$3,errores));}
 ;
 
 factor:ID
@@ -152,12 +213,12 @@ factor:ID
     |invocacion
 ;
 
-listavariables: ID ',' listavariables
-    | ID 
+listavariables: ID ',' listavariables {variables.add($1.sval);}
+    | ID {variables.add($1.sval);}
 ;
 
-invocacion: ID '('')' 
-    | ID '('expresion')'
+invocacion: ID '('')' {$$=new ParserVal(crear_terceto("exec",$1,new ParserVal("-")));}
+    | ID '('expresion')' {$$=new ParserVal(crear_terceto("exec",$1,$3));}
 ;
 %%
 
@@ -165,20 +226,29 @@ static Lex lex=null;
 static Parser par=null;
 int index=0;
 static ArrayList<Terceto> reglas=new ArrayList<Terceto>();
+static ArrayList<String> variables=new ArrayList<String>();
 static Stack<Integer> pila = new Stack<>();
+static Stack<String> pilaString=new Stack<>();
+static ArrayList<String> colaAmbito=new ArrayList<String>();
 ParserVal PV;
+
 
 int pointer;
 Terceto t;
 
 public static void main(String[] args) throws FileNotFoundException{
+    colaAmbito.add("m:");
     System.out.println("Iniciando compilacion...");
     lex=new Lex(args[0]);
     par=new Parser(false);
     par.run();
     System.out.println("Fin compilacion");
+    System.out.println();
+    System.out.println("Lista de Reglas");
     mostrarReglas(reglas);
-    
+    System.out.println();
+    System.out.println("Tabla de Simbolos");
+    mostrarTS();
 }
 
 
@@ -194,7 +264,7 @@ int yylex(){
 }
 
 void yyerror(String s){
-    System.out.println(s);
+    System.out.println(s+" on line "+lex.line);
 }
 
 String crear_terceto(String operando,ParserVal a,ParserVal b){
@@ -203,6 +273,11 @@ String crear_terceto(String operando,ParserVal a,ParserVal b){
     return "["+Integer.toString(reglas.indexOf(t))+"]";
 }
 
+String crear_terceto(String operando,ParserVal a,ParserVal b,ArrayList<String> errores){
+    Terceto t=new Terceto(operando, a, b,errores);
+    reglas.add(t);
+    return "["+Integer.toString(reglas.indexOf(t))+"]";
+}
 
 static int mostrarPila(Stack<Integer> pila){
     if (pila.empty())
@@ -220,4 +295,36 @@ static int mostrarReglas(ArrayList<Terceto> reglas){
         for (int i=0;i<reglas.size();i++)
             System.out.println("["+i+"] "+reglas.get(i));
     return 0;
+}
+
+static void mostrarTS(){
+    for (String name: lex.tablaSimbolos.keySet()) {
+        String key = name.toString();
+        String value = lex.tablaSimbolos.get(name).toString();
+        System.out.println(key + " " + value);
+    }
+}
+
+Simbolo buscarVariable(String nombre){
+    Simbolo variable;
+    int N=0;
+    do{
+        variable=lex.tablaSimbolos.get(getVariableName(nombre,0));
+        N++;
+    }while(variable==null&&N<colaAmbito.size());
+    return variable;
+}
+
+static String getVariableName(String nombre,int n){
+    for (int i=0;i<colaAmbito.size()-n;i++){
+        nombre=colaAmbito.get(i)+nombre;
+    }
+    return nombre;
+}
+
+void guardarVariable(String nombre,Simbolo s){
+    for (int i=0;i<colaAmbito.size();i++){
+        nombre=colaAmbito.get(i)+nombre;
+    }
+    lex.tablaSimbolos.put(nombre,s);
 }
