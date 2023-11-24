@@ -131,7 +131,7 @@ print: PRINT '(' CADENA ')'
     | PRINT '(' ')' {System.out.println("ERROR on line "+lex.line+": String expected");}
 ;
 
-declaracion: tipodato FUN ID '(' parametro ')' bloquefunct {
+declaracion: tipodato FUN identificadorfunct '(' parametro ')' bloquefunct {
         ArrayList<String> errores=new ArrayList<String>();
         if(buscarVariable($3.sval)!=null)
             errores.add("declared");
@@ -145,8 +145,9 @@ declaracion: tipodato FUN ID '(' parametro ')' bloquefunct {
         t.a=$3;
         t.b=$5;
         reglas.set(pila.pop()-1,t);
+        colaAmbito.remove(colaAmbito.size()-1);
     }
-    | tipodato FUN ID'('')' bloquefunct {
+    | tipodato FUN identificadorfunct'('')' bloquefunct {
         ArrayList<String> errores=new ArrayList<String>();
         if(buscarVariable($3.sval)!=null)
             errores.add("declared");
@@ -159,6 +160,7 @@ declaracion: tipodato FUN ID '(' parametro ')' bloquefunct {
         t=reglas.get(pila.peek()-1);
         t.a=new ParserVal($3.sval);
         reglas.set(pila.pop()-1,t);
+        colaAmbito.remove(colaAmbito.size()-1);
     }
     | tipodato listavariables ';' {
         for (int i=0; i<variables.size(); i++) {
@@ -170,6 +172,10 @@ declaracion: tipodato FUN ID '(' parametro ')' bloquefunct {
         };variables.clear();
     }
 ;
+
+identificadorfunct: ID {colaAmbito.add($1.sval+":");}
+;
+
 
 tipodato: UINTEGER  {$$=$1;}
     | LONGINT  {$$=$1;}
@@ -316,15 +322,19 @@ Simbolo buscarVariable(String nombre){
 }
 
 static String getVariableName(String nombre,int n){
-    for (int i=0;i<colaAmbito.size()-n;i++){
-        nombre=colaAmbito.get(i)+nombre;
+    String sufijo="";
+    for (int i=0;i<colaAmbito.size();i++){
+        sufijo=sufijo+colaAmbito.get(i);
     }
+    nombre=sufijo+nombre;
     return nombre;
 }
 
 void guardarVariable(String nombre,Simbolo s){
+    String sufijo="";
     for (int i=0;i<colaAmbito.size();i++){
-        nombre=colaAmbito.get(i)+nombre;
+        sufijo=sufijo+colaAmbito.get(i);
     }
+    nombre=sufijo+nombre;
     lex.tablaSimbolos.put(nombre,s);
 }
